@@ -1,6 +1,7 @@
 import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const _seed = Color(0xFF006C49);
@@ -28,10 +29,8 @@ class AppTheme {
       errorContainer: const Color(0xFFFFDAD6),
     );
 
-    final textTheme = Typography.blackMountainView.apply(
-      fontFamily: 'Inter',
-      bodyColor: scheme.onSurface,
-      displayColor: scheme.onSurface,
+    final textTheme = GoogleFonts.interTextTheme(
+      Typography.blackMountainView,
     ).copyWith(
       displayLarge: const TextStyle(
         fontFamily: 'Outfit',
@@ -73,6 +72,9 @@ class AppTheme {
         letterSpacing: 0.6,
         height: 16 / 12,
       ),
+    ).apply(
+      bodyColor: scheme.onSurface,
+      displayColor: scheme.onSurface,
     );
 
     return ThemeData(
@@ -80,7 +82,6 @@ class AppTheme {
       colorScheme: scheme,
       scaffoldBackgroundColor: scheme.surface,
       textTheme: textTheme,
-      fontFamily: 'Inter',
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
         foregroundColor: scheme.onSurface,
