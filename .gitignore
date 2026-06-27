@@ -47,4 +47,8 @@ app.*.map.json
 # Node / Backend
 **/node_modules/
 **/.env
+fitguard-web/node_modules/
+fitguard-web/dist/
+fitguard-web/.env
+fitguard-web/.vite/
 
