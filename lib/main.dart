@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'core/theme/app_theme.dart';
 import 'core/widgets/app_primary_button.dart';
 import 'core/widgets/app_section_header.dart';
