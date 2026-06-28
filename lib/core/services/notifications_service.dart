@@ -179,6 +179,7 @@ class NotificationService {
           priority: Priority.high,
           ticker: 'ticker',
           playSound: true,
+          color: AppTheme.light.colorScheme.primary,
           icon: '@drawable/ic_notification',
         ),
         iOS: const DarwinNotificationDetails(
