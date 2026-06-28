@@ -1,18 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class FitguardApp extends StatelessWidget {
-  const FitguardApp({super.key});
+import '../core/theme/app_theme.dart';
+import '../features/auth/presentation/controllers/auth_controller.dart';
+import 'app_router.dart';
+
+class FitGuardApp extends StatefulWidget {
+  const FitGuardApp({super.key, required this.authController});
+
+  final AuthController authController;
+
+  @override
+  State<FitGuardApp> createState() => _FitGuardAppState();
+}
+
+class _FitGuardAppState extends State<FitGuardApp> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _router = createAppRouter(widget.authController);
+  }
+
+  @override
+  void dispose() {
+    _router.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Fitguard',
+    return MaterialApp.router(
+      title: 'FitGuard',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text('FitGuard'),
-        ),
-      ),
+      theme: AppTheme.light,
+      routerConfig: _router,
     );
   }
 }

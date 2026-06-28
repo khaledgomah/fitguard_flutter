@@ -43,3 +43,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Node / Backend
+**/node_modules/
+**/.env
+fitguard-web/node_modules/
+fitguard-web/dist/
+fitguard-web/.env
+fitguard-web/.vite/
+

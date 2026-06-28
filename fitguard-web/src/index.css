@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+body {
+  background-color: theme('colors.background');
+  color: theme('colors.on-background');
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-pattern {
+  background-image: radial-gradient(theme('colors.outline-variant') 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bento-card:hover {
+  border-color: theme('colors.outline-variant');
+}
+
+.accordion-content {
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 500px;
+  opacity: 1;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+/* Toggle Switch Styles */
+.toggle-checkbox:checked { right: 0; border-color: theme('colors.primary-container'); }
+.toggle-checkbox:checked + .toggle-label { background-color: theme('colors.primary-container'); }
+.toggle-checkbox:checked + .toggle-label:after { transform: translateX(100%); }
+.toggle-label { width: 44px; height: 24px; background-color: theme('colors.surface-dim'); border-radius: 9999px; position: relative; cursor: pointer; transition: background-color .2s; }
+.toggle-label:after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+/* Form elements clinical styling */
+.clinical-input {
+    border: 1px solid theme('colors.outline-variant');
+    background-color: #ffffff;
+    transition: all 0.2s ease-in-out;
+}
+.clinical-input:focus {
+    outline: none;
+    border-color: theme('colors.error');
+    box-shadow: 0 0 0 1px theme('colors.error');
+    background-color: #ffffff;
+}
+
+.severity-radio-label {
+    transition: all 0.2s;
+}
+
+.severity-radio:checked + .severity-radio-label {
+    background-color: theme('colors.error-container');
+    border-color: theme('colors.error');
+    color: theme('colors.on-error-container');
+    font-weight: 600;
+}
+
