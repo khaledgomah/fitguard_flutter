@@ -1,4 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fitguard/app/app_routes.dart';
+import 'package:fitguard/core/services/navigation_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 @pragma('vm:entry-point')
@@ -125,21 +128,21 @@ class NotificationService {
   static void onNotificationTap(
     NotificationResponse notificationResponse,
   ) async {
-    // final payload = notificationResponse.payload ?? '';
+   // final payload = notificationResponse.payload ?? '';
 
-    // final navigatorState = NavigationService.navigatorKey.currentState;
-    // if (navigatorState == null) return;
+    final navigatorState = NavigationService.navigatorKey.currentState;
+    if (navigatorState == null) return;
 
-    // final overlayContext = navigatorState.overlay?.context;
-    // if (overlayContext == null) return;
+    final overlayContext = navigatorState.overlay?.context;
+    if (overlayContext == null) return;
 
-    // final currentRoute = ModalRoute.of(overlayContext);
-    // if (currentRoute?.settings.name != AppRoutes.mainLayoutScreen) {
-    //   navigatorState.pushNamedAndRemoveUntil(
-    //     AppRoutes.mainLayoutScreen,
-    //     (route) => false,
-    //   );
-    // }
+    final currentRoute = ModalRoute.of(overlayContext);
+    if (currentRoute?.settings.name != AppRoutes.dashboard) {
+      navigatorState.pushNamedAndRemoveUntil(
+        AppRoutes.dashboard,
+        (route) => false,
+      );
+    }
   }
 
   static String _extractNotificationPayload(Map<String, dynamic> data) {
@@ -176,8 +179,7 @@ class NotificationService {
           priority: Priority.high,
           ticker: 'ticker',
           playSound: true,
-          // icon: '@drawable/ic_notification',
-          // largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+          icon: '@drawable/ic_notification',
         ),
         iOS: const DarwinNotificationDetails(
           presentAlert: true,
