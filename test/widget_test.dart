@@ -5,6 +5,12 @@ import 'package:fitguard/features/auth/data/repositories/auth_repository.dart';
 import 'package:fitguard/features/auth/data/services/auth_api.dart';
 import 'package:fitguard/features/auth/data/services/token_storage.dart';
 import 'package:fitguard/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:fitguard/features/challenges/data/datasource/challenges_api.dart';
+import 'package:fitguard/features/challenges/data/repositories/challenges_repository_impl.dart';
+import 'package:fitguard/features/challenges/presentation/controllers/challenges_controller.dart';
+import 'package:fitguard/features/recovery_protocols/data/datasource/recovery_api.dart';
+import 'package:fitguard/features/recovery_protocols/data/repositories/recovery_repository_impl.dart';
+import 'package:fitguard/features/recovery_protocols/presentation/controllers/recovery_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -15,8 +21,20 @@ void main() {
       tokenStorage: storage,
     );
 
+    final challengesApi = ChallengesApi();
+    final challengesRepository = ChallengesRepositoryImpl(challengesApi: challengesApi);
+    final challengesController = ChallengesController(challengesRepository: challengesRepository);
+
+    final recoveryApi = RecoveryApi();
+    final recoveryRepository = RecoveryRepositoryImpl(recoveryApi: recoveryApi);
+    final recoveryController = RecoveryController(recoveryRepository: recoveryRepository);
+
     await tester.pumpWidget(
-      FitGuardApp(authController: AuthController(authRepository: repository)),
+      FitGuardApp(
+        authController: AuthController(authRepository: repository),
+        challengesController: challengesController,
+        recoveryController: recoveryController,
+      ),
     );
     await tester.pumpAndSettle();
 
