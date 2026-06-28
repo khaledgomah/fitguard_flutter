@@ -155,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               icon: Icons.monitor_heart_outlined,
               children: [
                 DropdownButtonFormField<String>(
-                  initialValue: _selectedSport,
+                  value: _selectedSport,
                   decoration: const InputDecoration(
                     labelText: 'Primary Discipline',
                     prefixIcon: Icon(Icons.fitness_center),
