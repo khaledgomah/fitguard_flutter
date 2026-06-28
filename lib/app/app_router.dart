@@ -7,10 +7,22 @@ import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/auth/presentation/screens/register_screen.dart';
 import '../features/auth/presentation/screens/splash_screen.dart';
+import '../features/challenges/presentation/controllers/challenges_controller.dart';
+import '../features/challenges/presentation/screens/active_challenge_screen.dart';
+import '../features/challenges/presentation/screens/challenge_details_screen.dart';
+import '../features/challenges/presentation/screens/challenge_list_screen.dart';
 import '../features/dashboard/presentation/screens/dashboard_placeholder_screen.dart';
+import '../features/recovery_protocols/presentation/controllers/recovery_controller.dart';
+import '../features/recovery_protocols/presentation/screens/active_recovery_screen.dart';
+import '../features/recovery_protocols/presentation/screens/recovery_details_screen.dart';
+import '../features/recovery_protocols/presentation/screens/recovery_list_screen.dart';
 import 'app_routes.dart';
 
-GoRouter createAppRouter(AuthController authController) {
+GoRouter createAppRouter(
+  AuthController authController,
+  ChallengesController challengesController,
+  RecoveryController recoveryController,
+) {
   return GoRouter(
     initialLocation: AppRoutes.splash,
     refreshListenable: authController,
@@ -21,6 +33,16 @@ GoRouter createAppRouter(AuthController authController) {
         AppRoutes.login,
         AppRoutes.register,
         AppRoutes.forgotPassword,
+      };
+
+      final protectedLocations = {
+        AppRoutes.dashboard,
+        AppRoutes.challenges,
+        AppRoutes.activeChallenge,
+        AppRoutes.challengeDetails,
+        AppRoutes.recovery,
+        AppRoutes.activeRecovery,
+        AppRoutes.recoveryDetails,
       };
 
       if (authController.status == AuthStatus.initial ||
@@ -41,7 +63,7 @@ GoRouter createAppRouter(AuthController authController) {
             : AppRoutes.onboarding;
       }
 
-      if (location == AppRoutes.dashboard) {
+      if (protectedLocations.contains(location)) {
         return AppRoutes.login;
       }
 
@@ -77,9 +99,50 @@ GoRouter createAppRouter(AuthController authController) {
         builder: (context, state) =>
             DashboardPlaceholderScreen(authController: authController),
       ),
+      GoRoute(
+        path: AppRoutes.challenges,
+        builder: (context, state) =>
+            ChallengeListScreen(challengesController: challengesController),
+      ),
+      GoRoute(
+        path: AppRoutes.activeChallenge,
+        builder: (context, state) =>
+            ActiveChallengeScreen(challengesController: challengesController),
+      ),
+      GoRoute(
+        path: AppRoutes.challengeDetails,
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return ChallengeDetailsScreen(
+            challengeId: id,
+            challengesController: challengesController,
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.recovery,
+        builder: (context, state) =>
+            RecoveryListScreen(recoveryController: recoveryController),
+      ),
+      GoRoute(
+        path: AppRoutes.activeRecovery,
+        builder: (context, state) =>
+            ActiveRecoveryScreen(recoveryController: recoveryController),
+      ),
+      GoRoute(
+        path: AppRoutes.recoveryDetails,
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return RecoveryDetailsScreen(
+            protocolId: id,
+            recoveryController: recoveryController,
+          );
+        },
+      ),
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(child: Text(state.error?.message ?? 'Screen not found')),
     ),
   );
 }
+

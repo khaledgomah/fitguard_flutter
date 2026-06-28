@@ -39,12 +39,13 @@ class _DashboardPlaceholderScreenState
             padding: const EdgeInsets.only(right: 12),
             child: TextButton.icon(
               onPressed: _isLoggingOut ? null : _logout,
-              icon: _isLoggingOut
-                  ? const SizedBox.square(
-                      dimension: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.logout),
+              icon:
+                  _isLoggingOut
+                      ? const SizedBox.square(
+                        dimension: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                      : const Icon(Icons.logout),
               label: const Text('Logout'),
             ),
           ),
@@ -84,7 +85,65 @@ class _DashboardPlaceholderScreenState
                       ],
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 24),
+                  Text(
+                    'AI Modules (Member 4 Features)',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isCompact = constraints.maxWidth < 600;
+                      final modules = [
+                        _ModuleNavigationCard(
+                          icon: Icons.psychology,
+                          title: 'AI Challenges',
+                          description:
+                              'Personalized 30-day training challenges for mobility, strength, and injury prevention.',
+                          buttonText: 'Open Challenges',
+                          onTap: () => context.go(AppRoutes.challenges),
+                          color: scheme.primary,
+                        ),
+                        _ModuleNavigationCard(
+                          icon: Icons.healing,
+                          title: 'Recovery Protocols',
+                          description:
+                              'AI-generated rehabilitation protocols to guide you safely back to sports.',
+                          buttonText: 'Open Protocols',
+                          onTap: () => context.go(AppRoutes.recovery),
+                          color: scheme.secondary,
+                        ),
+                      ];
+
+                      if (isCompact) {
+                        return Column(
+                          children: [
+                            modules[0],
+                            const SizedBox(height: 14),
+                            modules[1],
+                          ],
+                        );
+                      }
+
+                      return Row(
+                        children: [
+                          Expanded(child: modules[0]),
+                          const SizedBox(width: 14),
+                          Expanded(child: modules[1]),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                  Text(
+                    'System Status',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
                   LayoutBuilder(
                     builder: (context, constraints) {
                       final isCompact = constraints.maxWidth < 680;
@@ -136,6 +195,84 @@ class _DashboardPlaceholderScreenState
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ModuleNavigationCard extends StatelessWidget {
+  const _ModuleNavigationCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.buttonText,
+    required this.onTap,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String title;
+  final String description;
+  final String buttonText;
+  final VoidCallback onTap;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: scheme.outlineVariant),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            title,
+            style: theme.textTheme.titleLarge?.copyWith(fontSize: 20),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            description,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: scheme.onSurfaceVariant,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: onTap,
+              style: FilledButton.styleFrom(
+                backgroundColor: color,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(buttonText),
+            ),
+          ),
+        ],
       ),
     );
   }
