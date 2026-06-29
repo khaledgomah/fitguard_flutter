@@ -4,6 +4,8 @@ import 'package:fitguard/core/services/navigation_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../theme/app_theme.dart';
+
 @pragma('vm:entry-point')
 Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
   final notification = message.notification;
