@@ -7,7 +7,15 @@ import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/onboarding_screen.dart';
 import '../features/auth/presentation/screens/register_screen.dart';
 import '../features/auth/presentation/screens/splash_screen.dart';
-import '../features/dashboard/presentation/screens/dashboard_placeholder_screen.dart';
+import '../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../features/profile/presentation/screens/profile_screen.dart';
+import '../features/profile/presentation/screens/edit_profile_screen.dart';
+import '../features/biometrics/presentation/screens/biometrics_screen.dart';
+import '../features/recovery_protocols/presentation/screens/recovery_screen.dart';
+import '../features/reports/presentation/screens/reports_screen.dart';
+import '../features/challenges/presentation/screens/challenge_screen.dart';
+import 'presentation/screens/main_scaffold.dart';
+import 'presentation/widgets/authenticated_providers.dart';
 import 'app_routes.dart';
 
 GoRouter createAppRouter(AuthController authController) {
@@ -41,7 +49,7 @@ GoRouter createAppRouter(AuthController authController) {
             : AppRoutes.onboarding;
       }
 
-      if (location == AppRoutes.dashboard) {
+      if (!authLocations.contains(location) && location != AppRoutes.splash) {
         return AppRoutes.login;
       }
 
@@ -72,10 +80,69 @@ GoRouter createAppRouter(AuthController authController) {
         path: AppRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
+
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AuthenticatedProviders(
+            authController: authController,
+            child: MainScaffold(navigationShell: navigationShell),
+          );
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.dashboard,
+                builder: (context, state) =>
+                    DashboardScreen(authController: authController),
+                routes: [
+                  GoRoute(
+                    path: 'challenge',
+                    builder: (context, state) => const ChallengeScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/biometrics',
+                builder: (context, state) => BiometricsScreen(authController: authController),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/recovery',
+                builder: (context, state) => RecoveryScreen(authController: authController),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/reports',
+                builder: (context, state) => ReportsScreen(authController: authController),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.profile,
+                builder: (context, state) =>
+                    ProfileScreen(authController: authController),
+              ),
+            ],
+          ),
+        ],
+      ),
       GoRoute(
-        path: AppRoutes.dashboard,
+        path: AppRoutes.editProfile,
         builder: (context, state) =>
-            DashboardPlaceholderScreen(authController: authController),
+            EditProfileScreen(authController: authController),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
