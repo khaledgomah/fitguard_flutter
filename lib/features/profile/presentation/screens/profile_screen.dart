@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:ui';
 import '../../../../app/app_routes.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
 
@@ -18,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
         if (user == null) {
           return const Scaffold(body: Center(child: Text('No user found')));
         }
-        
+
         final theme = Theme.of(context);
 
         return Scaffold(
@@ -42,9 +41,14 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                          color: theme.colorScheme.primaryContainer.withValues(
+                            alpha: 0.5,
+                          ),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -57,20 +61,29 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Athlete Profile', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                          Text(
+                            'Athlete Profile',
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           IconButton(
-                            icon: Icon(Icons.edit_note, color: theme.colorScheme.primary),
-                            onPressed: () => context.push(AppRoutes.editProfile),
+                            icon: Icon(
+                              Icons.edit_note,
+                              color: theme.colorScheme.primary,
+                            ),
+                            onPressed: () =>
+                                context.push(AppRoutes.editProfile),
                             tooltip: 'Edit Profile',
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
-                      
+
                       GridView.count(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -79,15 +92,31 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisSpacing: 16,
                         childAspectRatio: 1.5,
                         children: [
-                          _StatCard(icon: Icons.sports_tennis, title: 'Sport', value: user.sport),
-                          _StatCard(icon: Icons.cake, title: 'Age', value: '${user.age} yrs'),
-                          _StatCard(icon: Icons.monitor_weight, title: 'Weight', value: '${user.weight} kg'),
-                          _StatCard(icon: Icons.height, title: 'Height', value: '${user.height} cm'),
+                          _StatCard(
+                            icon: Icons.sports_tennis,
+                            title: 'Sport',
+                            value: user.sport,
+                          ),
+                          _StatCard(
+                            icon: Icons.cake,
+                            title: 'Age',
+                            value: '${user.age} yrs',
+                          ),
+                          _StatCard(
+                            icon: Icons.monitor_weight,
+                            title: 'Weight',
+                            value: '${user.weight} kg',
+                          ),
+                          _StatCard(
+                            icon: Icons.height,
+                            title: 'Height',
+                            value: '${user.height} cm',
+                          ),
                         ],
                       ),
-                      
+
                       const SizedBox(height: 48),
-                      
+
                       _ActionTile(
                         icon: Icons.person_outline,
                         title: 'Account Info',
@@ -100,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
                         isDestructive: true,
                         onTap: () => _showLogoutDialog(context),
                       ),
-                      
+
                       const SizedBox(height: 48),
                     ],
                   ),
@@ -137,7 +166,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSliverAppBar(BuildContext context, ThemeData theme, String name) {
+  Widget _buildSliverAppBar(
+    BuildContext context,
+    ThemeData theme,
+    String name,
+  ) {
     return SliverAppBar(
       expandedHeight: 220.0,
       pinned: true,
@@ -173,7 +206,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               ),
             ),
@@ -185,7 +218,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 140,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               ),
             ),
@@ -203,7 +236,7 @@ class ProfileScreen extends StatelessWidget {
                     color: theme.colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
-                        color: theme.colorScheme.primary.withOpacity(0.3),
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
                         blurRadius: 24,
                         offset: const Offset(0, 8),
                       ),
@@ -246,7 +279,11 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _StatCard extends StatelessWidget {
-  const _StatCard({required this.icon, required this.title, required this.value});
+  const _StatCard({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
   final IconData icon;
   final String title;
   final String value;
@@ -258,10 +295,12 @@ class _StatCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: theme.colorScheme.outlineVariant.withOpacity(0.5)),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -272,7 +311,11 @@ class _StatCard extends StatelessWidget {
           Positioned(
             right: -10,
             bottom: -10,
-            child: Icon(icon, size: 80, color: theme.colorScheme.primary.withOpacity(0.05)),
+            child: Icon(
+              icon,
+              size: 80,
+              color: theme.colorScheme.primary.withValues(alpha: 0.05),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -284,11 +327,21 @@ class _StatCard extends StatelessWidget {
                   children: [
                     Icon(icon, size: 16, color: theme.colorScheme.primary),
                     const SizedBox(width: 8),
-                    Text(title, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.outline)),
+                    Text(
+                      title,
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(value, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  value,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
@@ -315,7 +368,7 @@ class _ActionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final color = isDestructive ? Colors.red : theme.colorScheme.onSurface;
-    
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
@@ -324,17 +377,25 @@ class _ActionTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: theme.colorScheme.outlineVariant.withOpacity(0.3)),
+          border: Border.all(
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+          ),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isDestructive ? Colors.red.withOpacity(0.1) : theme.colorScheme.primaryContainer.withOpacity(0.5),
+                color: isDestructive
+                    ? Colors.red.withValues(alpha: 0.1)
+                    : theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: isDestructive ? Colors.red : theme.colorScheme.primary, size: 20),
+              child: Icon(
+                icon,
+                color: isDestructive ? Colors.red : theme.colorScheme.primary,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -346,7 +407,11 @@ class _ActionTile extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(Icons.chevron_right, color: theme.colorScheme.outline, size: 20),
+            Icon(
+              Icons.chevron_right,
+              color: theme.colorScheme.outline,
+              size: 20,
+            ),
           ],
         ),
       ),

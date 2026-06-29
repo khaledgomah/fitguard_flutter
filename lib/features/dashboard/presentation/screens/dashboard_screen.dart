@@ -149,8 +149,8 @@ class _HeroRecoveryCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            theme.colorScheme.primary.withOpacity(0.9),
-            theme.colorScheme.primary.withOpacity(0.6),
+            theme.colorScheme.primary.withValues(alpha: 0.9),
+            theme.colorScheme.primary.withValues(alpha: 0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -158,7 +158,7 @@ class _HeroRecoveryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.primary.withOpacity(0.4),
+            color: theme.colorScheme.primary.withValues(alpha: 0.4),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -173,7 +173,7 @@ class _HeroRecoveryCard extends StatelessWidget {
               Text(
                 'Recovery Score',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,
                 ),
@@ -184,9 +184,9 @@ class _HeroRecoveryCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                 ),
                 child: Text(
                   'Active Recovery',
@@ -210,7 +210,7 @@ class _HeroRecoveryCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: scoreColor.withOpacity(0.4),
+                      color: scoreColor.withValues(alpha: 0.4),
                       blurRadius: 16,
                       spreadRadius: 2,
                     ),
@@ -222,7 +222,7 @@ class _HeroRecoveryCard extends StatelessWidget {
                     CircularProgressIndicator(
                       value: score / 100,
                       strokeWidth: 10,
-                      backgroundColor: Colors.white.withOpacity(0.1),
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
                       color: scoreColor,
                       strokeCap: StrokeCap.round,
                     ),
@@ -259,7 +259,7 @@ class _HeroRecoveryCard extends StatelessWidget {
                     child: Text(
                       '/ 100',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -272,7 +272,7 @@ class _HeroRecoveryCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.15),
+              color: Colors.black.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -282,7 +282,7 @@ class _HeroRecoveryCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 40,
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                 ),
                 const _HeroStat(label: 'Status', value: 'Ready to Train'),
               ],
@@ -308,7 +308,7 @@ class _HeroStat extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.labelMedium?.copyWith(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             letterSpacing: 0.5,
           ),
         ),
@@ -394,11 +394,11 @@ class _QuickActionItem extends StatelessWidget {
                 color: theme.colorScheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+                  color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withValues(alpha: 0.03),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -459,7 +459,7 @@ class _BiometricTrendsCard extends StatelessWidget {
                   show: true,
                   drawVerticalLine: false,
                   getDrawingHorizontalLine: (value) => FlLine(
-                    color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+                    color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
                     strokeWidth: 1,
                   ),
                 ),
@@ -544,8 +544,8 @@ class _BiometricTrendsCard extends StatelessWidget {
                       show: true,
                       gradient: LinearGradient(
                         colors: [
-                          theme.colorScheme.primary.withOpacity(0.3),
-                          theme.colorScheme.primary.withOpacity(0.0),
+                          theme.colorScheme.primary.withValues(alpha: 0.3),
+                          theme.colorScheme.primary.withValues(alpha: 0.0),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -582,7 +582,7 @@ class _AIRecommendationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1BFFFF).withOpacity(0.3),
+            color: const Color(0xFF1BFFFF).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -596,7 +596,7 @@ class _AIRecommendationCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -620,7 +620,7 @@ class _AIRecommendationCard extends StatelessWidget {
           Text(
             'Reduce sprint intensity today. Your HRV indicates central nervous system fatigue.',
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.white.withOpacity(0.95),
+              color: Colors.white.withValues(alpha: 0.95),
               height: 1.4,
             ),
           ),
@@ -628,9 +628,9 @@ class _AIRecommendationCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.1)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
             ),
             child: Row(
               children: [
@@ -640,7 +640,7 @@ class _AIRecommendationCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 40,
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                 ),
                 const SizedBox(width: 16),
                 const Expanded(
@@ -669,7 +669,7 @@ class _AIStat extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.labelMedium?.copyWith(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             letterSpacing: 0.5,
           ),
         ),
@@ -812,8 +812,8 @@ class _ClinicalAlertsSection extends StatelessWidget {
             status: 'Optimal',
             description: 'No injury risks detected in recent data.',
             color: theme.colorScheme.primary,
-            backgroundColor: theme.colorScheme.primaryContainer.withOpacity(
-              0.2,
+            backgroundColor: theme.colorScheme.primaryContainer.withValues(
+              alpha: 0.2,
             ),
             iconColor: theme.colorScheme.primary,
           ),
@@ -847,7 +847,7 @@ class _AlertCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -891,7 +891,7 @@ class _AlertCard extends StatelessWidget {
                 Text(
                   description,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: iconColor.withOpacity(0.8),
+                    color: iconColor.withValues(alpha: 0.8),
                   ),
                 ),
               ],

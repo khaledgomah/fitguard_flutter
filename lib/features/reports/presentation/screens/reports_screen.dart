@@ -35,9 +35,9 @@ class _ReportsScreenView extends StatelessWidget {
       ),
       body: BlocBuilder<ReportsCubit, ReportsState>(
         builder: (context, state) {
-          if (state is ReportsLoading)
+          if (state is ReportsLoading) {
             return const Center(child: CircularProgressIndicator());
-
+          }
           if (state is ReportsError) {
             return Center(child: Text('Error: ${state.message}'));
           }
@@ -267,7 +267,7 @@ class _ActivityHistoryLineChart extends StatelessWidget {
             show: true,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
               strokeWidth: 1,
             ),
           ),
@@ -338,8 +338,8 @@ class _ActivityHistoryLineChart extends StatelessWidget {
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    theme.colorScheme.secondary.withOpacity(0.3),
-                    theme.colorScheme.secondary.withOpacity(0.0),
+                    theme.colorScheme.secondary.withValues(alpha: 0.3),
+                    theme.colorScheme.secondary.withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
