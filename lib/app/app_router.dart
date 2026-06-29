@@ -131,8 +131,9 @@ GoRouter createAppRouter(
                   ),
                   GoRoute(
                     path: 'notifications',
-                    builder: (context, state) => const NotificationsScreen(),)
-                         GoRoute(
+                    builder: (context, state) => const NotificationsScreen(),
+                  ),
+                  GoRoute(
                     path: 'injuries',
                     builder: (context, state) => const InjuryListScreen(),
                     routes: [

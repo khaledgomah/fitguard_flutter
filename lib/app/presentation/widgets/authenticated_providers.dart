@@ -71,19 +71,8 @@ class _AuthenticatedProvidersState extends State<AuthenticatedProviders> {
     _challengeCubit = ChallengeCubit(repository: ChallengeRepository(dio: _dio))
       ..fetchActiveChallenge();
     _notificationCubit = NotificationCubit(
-      repository: NotificationRepository(dio: _dio),
-    _dashboardCubit = DashboardCubit(
-      dashboardRepository: dashboardRepository,
-    )..fetchDashboardStats();
-    _recoveryCubit = RecoveryCubit(
-      repository: RecoveryRepository(dio: _dio),
-    )..fetchActiveProtocol();
-    _reportsCubit = ReportsCubit(
-      repository: dashboardRepository,
-    )..fetchReports();
-    _challengeCubit = ChallengeCubit(
-      repository: ChallengeRepository(dio: _dio),
-    )..fetchActiveChallenge();
+      repository: NotificationRepository(dio: _dio));
+
 
     final injuryDio = Dio(
       BaseOptions(
