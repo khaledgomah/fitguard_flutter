@@ -84,7 +84,7 @@ class _RecoveryScreenView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          final result = await LogInjuryBottomSheet.show(context, authController);
+          final result = await LogInjuryBottomSheet.show(context);
           if (result == true && context.mounted) {
             context.read<DashboardCubit>().fetchDashboardStats();
             context.read<RecoveryCubit>().fetchActiveProtocol();
