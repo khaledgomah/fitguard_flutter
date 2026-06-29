@@ -240,7 +240,7 @@ class _DayCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: day.completed ? theme.colorScheme.primaryContainer.withOpacity(0.5) : theme.colorScheme.surface,
+      color: day.completed ? theme.colorScheme.primaryContainer.withValues(alpha: 0.5) : theme.colorScheme.surface,
       elevation: day.completed ? 0 : 2,
       child: ExpansionTile(
         leading: Container(
