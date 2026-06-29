@@ -1,6 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fitguard/app/fitguard_app.dart';
+import 'package:fitguard/core/services/firebase_service.dart';
+import 'package:fitguard/core/services/notifications_service.dart';
 import 'package:flutter/material.dart';
-
-import 'app/fitguard_app.dart';
+import 'package:flutter/services.dart';
 import 'features/auth/data/repositories/auth_repository.dart';
 import 'features/auth/data/services/auth_api.dart';
 import 'features/auth/data/services/token_storage.dart';
@@ -12,8 +15,17 @@ import 'features/recovery_protocols/data/datasource/recovery_api.dart';
 import 'features/recovery_protocols/data/repositories/recovery_repository_impl.dart';
 import 'features/recovery_protocols/presentation/controllers/recovery_controller.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  await FirebaseService.initialize();
+  await NotificationService.initialize();
+  await NotificationService.getDeviceToken();
+  FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
 
   final tokenStorage = SecureTokenStorage();
   final authRepository = AuthRepository(
@@ -50,5 +62,6 @@ void main() {
       recoveryController: recoveryController,
     ),
   );
+
 }
 
