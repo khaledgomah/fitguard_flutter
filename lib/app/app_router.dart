@@ -13,6 +13,8 @@ import '../features/challenges/presentation/screens/active_challenge_screen.dart
 import '../features/challenges/presentation/screens/challenge_details_screen.dart';
 import '../features/challenges/presentation/screens/challenge_list_screen.dart';
 import '../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../features/injuries/presentation/screens/injury_detail_screen.dart';
+import '../features/injuries/presentation/screens/injury_list_screen.dart';
 import '../features/recovery_protocols/presentation/controllers/recovery_controller.dart';
 import '../features/recovery_protocols/presentation/screens/active_recovery_screen.dart';
 import '../features/recovery_protocols/presentation/screens/recovery_details_screen.dart';
@@ -122,6 +124,19 @@ GoRouter createAppRouter(
                   GoRoute(
                     path: 'challenge',
                     builder: (context, state) => const ChallengeScreen(),
+                  ),
+                  GoRoute(
+                    path: 'injuries',
+                    builder: (context, state) => const InjuryListScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        builder: (context, state) {
+                          final id = state.pathParameters['id'] ?? '';
+                          return InjuryDetailScreen(injuryId: id);
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

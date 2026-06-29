@@ -102,7 +102,7 @@ class _DashboardScreenView extends StatelessWidget {
                     children: [
                       _HeroRecoveryCard(score: state.stats.activityScore),
                       const SizedBox(height: 24),
-                      _QuickActionsRow(authController: authController),
+                      const _QuickActionsRow(),
                       const SizedBox(height: 24),
                       const _BiometricTrendsCard(),
                       const SizedBox(height: 24),
@@ -325,8 +325,7 @@ class _HeroStat extends StatelessWidget {
 }
 
 class _QuickActionsRow extends StatelessWidget {
-  const _QuickActionsRow({required this.authController});
-  final AuthController authController;
+  const _QuickActionsRow();
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +337,7 @@ class _QuickActionsRow extends StatelessWidget {
           label: 'Log Injury',
           color: Colors.red,
           onTap: () {
-            LogInjuryBottomSheet.show(context, authController);
+            LogInjuryBottomSheet.show(context);
           },
         ),
         const SizedBox(width: 12),
@@ -357,10 +356,10 @@ class _QuickActionsRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         _QuickActionItem(
-          icon: Icons.show_chart,
-          label: 'Trends',
+          icon: Icons.list_alt,
+          label: 'Injuries',
           color: Colors.blue,
-          onTap: () => context.go('/reports'),
+          onTap: () => context.go(AppRoutes.injuries),
         ),
       ],
     );
@@ -816,6 +815,12 @@ class _ClinicalAlertsSection extends StatelessWidget {
             ),
             iconColor: theme.colorScheme.primary,
           ),
+        const SizedBox(height: 12),
+        TextButton.icon(
+          onPressed: () => context.go(AppRoutes.injuries),
+          icon: const Icon(Icons.arrow_forward, size: 18),
+          label: const Text('View Injury History'),
+        ),
       ],
     );
   }

@@ -11,6 +11,8 @@ class AppRoutes {
   static const recovery = '/recovery';
   static const activeRecovery = '/recovery/active';
   static const recoveryDetails = '/recovery/details/:id';
+  static const injuries = '/dashboard/injuries';
+  static const injuryDetails = '/dashboard/injuries/:id';
   static const profile = '/profile';
   static const editProfile = '/profile/edit';
   static const aboutUs = '/about-us';
