@@ -88,6 +88,31 @@ class _ActiveRecoveryScreenState extends State<ActiveRecoveryScreen> {
         final active = widget.recoveryController.activeProtocol;
 
         if (active == null) {
+          if (_showSuccessAlert) {
+            return Scaffold(
+              body: Container(
+                color: scheme.shadow.withValues(alpha: 0.8),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.stars, size: 90, color: scheme.primary),
+                    const SizedBox(height: 20),
+                    Text(
+                      _successMessage,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.displayMedium?.copyWith(color: scheme.onPrimary, fontSize: 24),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Rehabilitation Protocol Completed!',
+                      style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onPrimary.withValues(alpha: 0.7)),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
           return Scaffold(
             appBar: AppBar(title: const Text('Active Recovery')),
             body: AppEmptyState(

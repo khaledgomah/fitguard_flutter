@@ -87,7 +87,7 @@ class _DashboardPlaceholderScreenState
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'AI Modules (Member 4 Features)',
+                    'AI Modules',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

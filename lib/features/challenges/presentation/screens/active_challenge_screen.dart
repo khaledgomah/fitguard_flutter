@@ -39,6 +39,35 @@ class _ActiveChallengeScreenState extends State<ActiveChallengeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    try {
+      final uri = GoRouterState.of(context).uri;
+      final dayStr = uri.queryParameters['day'];
+      if (dayStr != null) {
+        final day = int.tryParse(dayStr);
+        if (day != null && day != _selectedDay) {
+          setState(() {
+            _selectedDay = day;
+          });
+          WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToSelectedDay(day));
+        }
+      }
+    } catch (_) {}
+  }
+
+  void _scrollToSelectedDay(int day) {
+    if (_scrollController.hasClients) {
+      final double targetOffset = (day - 1) * 62.0 - 100.0;
+      _scrollController.animateTo(
+        targetOffset.clamp(0.0, _scrollController.position.maxScrollExtent),
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -112,6 +141,30 @@ class _ActiveChallengeScreenState extends State<ActiveChallengeScreen> {
         final active = widget.challengesController.activeChallenge;
 
         if (active == null) {
+          if (_showCelebration) {
+            return Scaffold(
+              body: Container(
+                color: scheme.shadow.withValues(alpha: 0.8),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.emoji_events, size: 100, color: Colors.amber),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Congratulations!',
+                      style: theme.textTheme.displayMedium?.copyWith(color: scheme.onPrimary),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'You have completed the entire challenge!',
+                      style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onPrimary.withValues(alpha: 0.7)),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
           return Scaffold(
             appBar: AppBar(title: const Text('Active Challenge')),
             body: AppEmptyState(
@@ -129,10 +182,14 @@ class _ActiveChallengeScreenState extends State<ActiveChallengeScreen> {
           _selectedDay = active.durationDays;
         }
 
-        final selectedTask = active.dailyTasks.firstWhere(
-          (t) => t.day == _selectedDay,
-          orElse: () => active.dailyTasks.first,
-        );
+        DailyTask? foundTask;
+        for (final t in active.dailyTasks) {
+          if (t.day == _selectedDay) {
+            foundTask = t;
+            break;
+          }
+        }
+        final selectedTask = foundTask ?? active.dailyTasks.first;
 
         final overallProgress = active.progressPercentage;
 

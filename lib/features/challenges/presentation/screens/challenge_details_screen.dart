@@ -94,6 +94,19 @@ class ChallengeDetailsScreen extends StatelessWidget {
                     final task = challenge.dailyTasks[index];
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
+                      onTap: () {
+                        final active = challengesController.activeChallenge;
+                        if (active != null && active.id == challenge.id) {
+                          context.go('/challenges/active?day=${task.day}');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('You can only track tasks for your active challenge.'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
                       leading: CircleAvatar(
                         backgroundColor: task.isCompleted
                             ? scheme.primaryContainer.withValues(alpha: 0.2)
