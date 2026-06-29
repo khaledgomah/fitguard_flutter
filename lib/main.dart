@@ -8,6 +8,12 @@ import 'features/auth/data/repositories/auth_repository.dart';
 import 'features/auth/data/services/auth_api.dart';
 import 'features/auth/data/services/token_storage.dart';
 import 'features/auth/presentation/controllers/auth_controller.dart';
+import 'features/challenges/data/datasource/challenges_api.dart';
+import 'features/challenges/data/repositories/challenges_repository_impl.dart';
+import 'features/challenges/presentation/controllers/challenges_controller.dart';
+import 'features/recovery_protocols/data/datasource/recovery_api.dart';
+import 'features/recovery_protocols/data/repositories/recovery_repository_impl.dart';
+import 'features/recovery_protocols/presentation/controllers/recovery_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +33,35 @@ Future<void> main() async {
     tokenStorage: tokenStorage,
   );
 
+  final authController = AuthController(authRepository: authRepository);
+
+  final challengesApi = ChallengesApi();
+  final challengesRepository = ChallengesRepositoryImpl(challengesApi: challengesApi);
+  final challengesController = ChallengesController(challengesRepository: challengesRepository);
+
+  final recoveryApi = RecoveryApi();
+  final recoveryRepository = RecoveryRepositoryImpl(recoveryApi: recoveryApi);
+  final recoveryController = RecoveryController(recoveryRepository: recoveryRepository);
+
+  // Update API authorization headers dynamically when session state updates
+  authController.addListener(() {
+    final token = authController.session?.accessToken;
+    challengesApi.updateToken(token);
+    recoveryApi.updateToken(token);
+  });
+
+  // Call the listener immediately in case a session is already present
+  final initialToken = authController.session?.accessToken;
+  challengesApi.updateToken(initialToken);
+  recoveryApi.updateToken(initialToken);
+
   runApp(
-    FitGuardApp(authController: AuthController(authRepository: authRepository)),
+    FitGuardApp(
+      authController: authController,
+      challengesController: challengesController,
+      recoveryController: recoveryController,
+    ),
   );
 
 }
+

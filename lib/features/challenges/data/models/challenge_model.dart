@@ -1,93 +1,72 @@
+import '../../domain/entities/challenge.dart';
+import 'daily_task_model.dart';
 
-class ChallengeModel {
-  final String id;
-  final String sport;
-  final String difficulty;
-  final String status;
-  final List<ChallengeDay> generatedPlan;
-  final DateTime startDate;
-
-  ChallengeModel({
-    required this.id,
-    required this.sport,
-    required this.difficulty,
-    required this.status,
-    required this.generatedPlan,
-    required this.startDate,
+class ChallengeModel extends Challenge {
+  const ChallengeModel({
+    required super.id,
+    required super.title,
+    required super.description,
+    required super.type,
+    required super.difficulty,
+    required super.durationDays,
+    required super.currentDay,
+    required super.isCompleted,
+    required super.dailyTasks,
+    super.startDate,
   });
 
   factory ChallengeModel.fromJson(Map<String, dynamic> json) {
+    var tasksFromJson = json['dailyTasks'] as List? ?? [];
+    List<DailyTaskModel> tasksList = tasksFromJson
+        .map((task) => DailyTaskModel.fromJson(Map<String, dynamic>.from(task)))
+        .toList();
+
     return ChallengeModel(
-      id: json['_id'] ?? '',
-      sport: json['sport'] ?? '',
-      difficulty: json['difficulty'] ?? '',
-      status: json['status'] ?? 'active',
-      startDate: json['startDate'] != null ? DateTime.parse(json['startDate']) : DateTime.now(),
-      generatedPlan: (json['generatedPlan'] as List<dynamic>?)
-              ?.map((e) => ChallengeDay.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      id: (json['id'] ?? json['_id'] ?? '').toString(),
+      title: (json['title'] ?? '').toString(),
+      description: (json['description'] ?? '').toString(),
+      type: (json['type'] ?? '').toString(),
+      difficulty: (json['difficulty'] ?? '').toString(),
+      durationDays: _toInt(json['durationDays'] ?? 30),
+      currentDay: _toInt(json['currentDay'] ?? 1),
+      isCompleted: json['isCompleted'] == true,
+      dailyTasks: tasksList,
+      startDate: json['startDate'] != null
+          ? DateTime.tryParse(json['startDate'].toString())
+          : null,
     );
   }
-}
 
-class ChallengeDay {
-  final int day;
-  final String? task;
-  final List<Exercise> exercises;
-  final List<String> muscleGroups;
-  final String? difficulty;
-  final bool completed;
-
-  ChallengeDay({
-    required this.day,
-    this.task,
-    required this.exercises,
-    required this.muscleGroups,
-    this.difficulty,
-    required this.completed,
-  });
-
-  factory ChallengeDay.fromJson(Map<String, dynamic> json) {
-    return ChallengeDay(
-      day: json['day'] ?? 1,
-      task: json['task'],
-      exercises: (json['exercises'] as List<dynamic>?)
-              ?.map((e) => Exercise.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      muscleGroups: (json['muscleGroups'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-      difficulty: json['difficulty'],
-      completed: json['completed'] ?? false,
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'type': type,
+      'difficulty': difficulty,
+      'durationDays': durationDays,
+      'currentDay': currentDay,
+      'isCompleted': isCompleted,
+      'dailyTasks': dailyTasks
+          .map((task) => (task is DailyTaskModel)
+              ? task.toJson()
+              : DailyTaskModel(
+                  id: task.id,
+                  day: task.day,
+                  title: task.title,
+                  description: task.description,
+                  durationMinutes: task.durationMinutes,
+                  isCompleted: task.isCompleted,
+                  videoUrl: task.videoUrl,
+                ).toJson())
+          .toList(),
+      'startDate': startDate?.toIso8601String(),
+    };
   }
-}
 
-class Exercise {
-  final String id;
-  final String name;
-  final int? sets;
-  final int? reps;
-  final String? duration;
-  final bool completed;
-
-  Exercise({
-    required this.id,
-    required this.name,
-    this.sets,
-    this.reps,
-    this.duration,
-    required this.completed,
-  });
-
-  factory Exercise.fromJson(Map<String, dynamic> json) {
-    return Exercise(
-      id: json['_id'] ?? '',
-      name: json['name'] ?? '',
-      sets: json['sets'],
-      reps: json['reps'],
-      duration: json['duration'],
-      completed: json['completed'] ?? false,
-    );
+  static int _toInt(Object? value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value?.toString() ?? '') ?? 0;
   }
 }
