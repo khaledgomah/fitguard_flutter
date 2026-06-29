@@ -23,7 +23,11 @@ abstract class TokenStorage {
 
 class SecureTokenStorage implements TokenStorage {
   SecureTokenStorage({FlutterSecureStorage? secureStorage})
-    : _secureStorage = secureStorage ?? const FlutterSecureStorage();
+    : _secureStorage = secureStorage ?? const FlutterSecureStorage(
+        aOptions: AndroidOptions(
+          encryptedSharedPreferences: true,
+        ),
+      );
 
   static const _accessTokenKey = 'fitguard_access_token';
   static const _refreshTokenKey = 'fitguard_refresh_token';
