@@ -18,12 +18,15 @@ class EditProfileScreen extends StatelessWidget {
       create: (context) => ProfileCubit(
         authController: authController,
         profileRepository: ProfileRepository(
-          dio: Dio(BaseOptions(
-            baseUrl: 'http://10.0.2.2:5000',
-            headers: {
-              'Authorization': 'Bearer ${authController.session?.accessToken ?? ''}'
-            }
-          ))
+          dio: Dio(
+            BaseOptions(
+              baseUrl: 'http://10.0.2.2:5000',
+              headers: {
+                'Authorization':
+                    'Bearer ${authController.session?.accessToken ?? ''}',
+              },
+            ),
+          ),
         ),
       ),
       child: _EditProfileForm(authController: authController),
@@ -41,7 +44,7 @@ class _EditProfileForm extends StatefulWidget {
 
 class _EditProfileFormState extends State<_EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
-  
+
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _sportController;
@@ -57,8 +60,12 @@ class _EditProfileFormState extends State<_EditProfileForm> {
     _emailController = TextEditingController(text: user?.email ?? '');
     _sportController = TextEditingController(text: user?.sport ?? '');
     _ageController = TextEditingController(text: user?.age.toString() ?? '');
-    _weightController = TextEditingController(text: user?.weight.toString() ?? '');
-    _heightController = TextEditingController(text: user?.height.toString() ?? '');
+    _weightController = TextEditingController(
+      text: user?.weight.toString() ?? '',
+    );
+    _heightController = TextEditingController(
+      text: user?.height.toString() ?? '',
+    );
   }
 
   @override
@@ -104,13 +111,15 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                 content: const Text('Profile updated successfully!'),
                 backgroundColor: theme.colorScheme.primary,
                 behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             );
           } else if (state is ProfileUpdateError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message), 
+                content: Text(state.message),
                 backgroundColor: theme.colorScheme.error,
                 behavior: SnackBarBehavior.floating,
               ),
@@ -123,7 +132,10 @@ class _EditProfileFormState extends State<_EditProfileForm> {
           return Form(
             key: _formKey,
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 12.0,
+              ),
               children: [
                 _buildModernTextField(
                   controller: _nameController,
@@ -131,10 +143,11 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                   icon: Icons.person_outline,
                   theme: theme,
                   enabled: !isLoading,
-                  validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
                 ),
                 const SizedBox(height: 16),
-                
+
                 _buildModernTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -142,10 +155,13 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                   theme: theme,
                   enabled: !isLoading,
                   keyboardType: TextInputType.emailAddress,
-                  validator: (value) => value == null || value.isEmpty || !value.contains('@') ? 'Enter a valid email' : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty || !value.contains('@')
+                      ? 'Enter a valid email'
+                      : null,
                 ),
                 const SizedBox(height: 16),
-                
+
                 _buildModernTextField(
                   controller: _sportController,
                   label: 'Primary Sport',
@@ -154,7 +170,7 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                   enabled: !isLoading,
                 ),
                 const SizedBox(height: 16),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -181,7 +197,7 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                
+
                 _buildModernTextField(
                   controller: _heightController,
                   label: 'Height (cm)',
@@ -191,7 +207,7 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                   enabled: !isLoading,
                 ),
                 const SizedBox(height: 40),
-                
+
                 Container(
                   width: double.infinity,
                   height: 56,
@@ -209,20 +225,29 @@ class _EditProfileFormState extends State<_EditProfileForm> {
                   child: FilledButton(
                     onPressed: isLoading ? null : _submit,
                     style: FilledButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: Colors.white,
                     ),
-                    child: isLoading 
-                      ? SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.5,
+                    child: isLoading
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2.5,
+                            ),
+                          )
+                        : const Text(
+                            'Save Changes',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                        )
-                      : const Text('Save Changes', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -252,22 +277,32 @@ class _EditProfileFormState extends State<_EditProfileForm> {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: theme.colorScheme.outline),
-        prefixIcon: Icon(icon, color: theme.colorScheme.primary.withOpacity(0.7)),
+        prefixIcon: Icon(
+          icon,
+          color: theme.colorScheme.primary.withOpacity(0.7),
+        ),
         filled: true,
         fillColor: theme.colorScheme.surfaceContainerLowest,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: theme.colorScheme.outlineVariant.withOpacity(0.5)),
+          borderSide: BorderSide(
+            color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: theme.colorScheme.outlineVariant.withOpacity(0.5)),
+          borderSide: BorderSide(
+            color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 18,
+        ),
       ),
     );
   }
