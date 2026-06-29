@@ -111,7 +111,7 @@ class _LogInjuryBottomSheetState extends State<LogInjuryBottomSheet> {
         labelText: label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
       ),
-      value: value,
+      initialValue: value,
       items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
       onChanged: onChanged,
     );

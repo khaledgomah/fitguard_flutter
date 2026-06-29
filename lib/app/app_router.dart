@@ -11,11 +11,19 @@ import '../features/challenges/presentation/controllers/challenges_controller.da
 import '../features/challenges/presentation/screens/active_challenge_screen.dart';
 import '../features/challenges/presentation/screens/challenge_details_screen.dart';
 import '../features/challenges/presentation/screens/challenge_list_screen.dart';
-import '../features/dashboard/presentation/screens/dashboard_placeholder_screen.dart';
+import '../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../features/recovery_protocols/presentation/controllers/recovery_controller.dart';
 import '../features/recovery_protocols/presentation/screens/active_recovery_screen.dart';
 import '../features/recovery_protocols/presentation/screens/recovery_details_screen.dart';
 import '../features/recovery_protocols/presentation/screens/recovery_list_screen.dart';
+import '../features/challenges/presentation/screens/challenge_screen.dart';
+import '../features/biometrics/presentation/screens/biometrics_screen.dart';
+import '../features/recovery_protocols/presentation/screens/recovery_screen.dart';
+import '../features/reports/presentation/screens/reports_screen.dart';
+import '../features/profile/presentation/screens/profile_screen.dart';
+import '../features/profile/presentation/screens/edit_profile_screen.dart';
+import 'presentation/widgets/authenticated_providers.dart';
+import 'presentation/screens/main_scaffold.dart';
 import 'app_routes.dart';
 
 GoRouter createAppRouter(
