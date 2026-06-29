@@ -1,6 +1,6 @@
 const Challenge = require('../models/Challenge');
 const InjuryLog = require('../models/InjuryLog');
-const Notification = require('../models/Notification');
+const { createNotification } = require('../services/notificationService');
 const aiService = require('../services/aiService');
 const { getInjuryAIContext } = require('../utils/injuryPatterns');
 const APIFeatures = require('../utils/apiFeatures');
@@ -60,12 +60,11 @@ exports.generateChallenge = async (req, res, next) => {
 
     await challenge.save();
 
-    const notification = new Notification({
+    await createNotification({
       userId: user._id,
       type: 'challenge_nudge',
       message: `Your personalized 30-day ${challenge.sport} challenge (${challenge.difficulty}) has been generated! Complete Day 1 to start your streak.`
     });
-    await notification.save();
 
     res.status(201).json({
       success: true,
@@ -198,12 +197,11 @@ exports.completeDay = async (req, res, next) => {
       msg = `Incredible job! You have fully completed your 30-day ${challenge.sport} challenge!`;
     }
 
-    const notification = new Notification({
+    await createNotification({
       userId: req.user._id,
       type: 'challenge_nudge',
       message: msg
     });
-    await notification.save();
 
     res.status(200).json({
       success: true,

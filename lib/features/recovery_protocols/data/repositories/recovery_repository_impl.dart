@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import '../../../../core/network/api_exception.dart';
+import '../../../../core/services/notifications_service.dart';
 import '../../domain/entities/recovery_protocol.dart';
 import '../../domain/repositories/recovery_repository.dart';
 import '../datasource/recovery_api.dart';
@@ -144,6 +145,14 @@ class RecoveryRepositoryImpl implements RecoveryRepository {
         injuryType: injuryType,
         severity: severity,
       );
+      final firstPhaseName = remote.phases.isEmpty
+          ? 'your first phase'
+          : remote.phases.first.name;
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'recovery_reminder',
+        message:
+            'Recovery protocol generated for your ${remote.injuryType} ${remote.injuryName}. Let\'s start Phase 1: $firstPhaseName.',
+      );
       return remote;
     } catch (e) {
       log('RecoveryApi error: $e. Falling back to local mocks.');
@@ -252,6 +261,18 @@ class RecoveryRepositoryImpl implements RecoveryRepository {
       final remote = await _recoveryApi.completePhase(
         protocolId: protocolId,
         phaseId: phaseId,
+      );
+      final matchingPhases = remote.phases.where((phase) => phase.id == phaseId);
+      final phaseNumber = matchingPhases.isEmpty
+          ? remote.currentPhaseIndex + 1
+          : matchingPhases.first.phaseNumber;
+      final message = remote.status == 'completed'
+          ? 'Excellent work! You completed all recovery phases for your ${remote.injuryName}. Injury marked as recovered.'
+          : 'Phase $phaseNumber of your recovery protocol completed.';
+
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'recovery_reminder',
+        message: message,
       );
       return remote;
     } catch (e) {

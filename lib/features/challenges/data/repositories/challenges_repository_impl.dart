@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import '../../../../core/network/api_exception.dart';
+import '../../../../core/services/notifications_service.dart';
 import '../../domain/entities/challenge.dart';
 import '../../domain/repositories/challenges_repository.dart';
 import '../datasource/challenges_api.dart';
@@ -114,6 +115,11 @@ class ChallengesRepositoryImpl implements ChallengesRepository {
         type: type,
         difficulty: difficulty,
       );
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'challenge_nudge',
+        message:
+            'Your personalized 30-day ${remote.title} challenge (${remote.difficulty}) has been generated! Complete Day 1 to start your streak.',
+      );
       return remote;
     } catch (e) {
       log('ChallengesApi error: $e. Falling back to local mocks.');
@@ -160,6 +166,18 @@ class ChallengesRepositoryImpl implements ChallengesRepository {
       final remote = await _challengesApi.completeDailyTask(
         challengeId: challengeId,
         taskId: taskId,
+      );
+      final matchingTasks = remote.dailyTasks.where((task) => task.id == taskId);
+      final completedDay = matchingTasks.isEmpty
+          ? remote.currentDay
+          : matchingTasks.first.day;
+      final message = remote.isCompleted
+          ? 'Incredible job! You have fully completed your ${remote.title} challenge!'
+          : 'Day $completedDay of your ${remote.title} challenge is complete! Keep up the good work.';
+
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'challenge_nudge',
+        message: message,
       );
       return remote;
     } catch (e) {

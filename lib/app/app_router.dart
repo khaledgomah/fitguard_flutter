@@ -2,6 +2,7 @@ import 'package:fitguard/features/about_us/presentation/screens/about_us_screen.
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/services/navigation_service.dart';
 import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
@@ -13,6 +14,7 @@ import '../features/challenges/presentation/screens/active_challenge_screen.dart
 import '../features/challenges/presentation/screens/challenge_details_screen.dart';
 import '../features/challenges/presentation/screens/challenge_list_screen.dart';
 import '../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../features/notifications/presentation/screens/notifications_screen.dart';
 import '../features/recovery_protocols/presentation/controllers/recovery_controller.dart';
 import '../features/recovery_protocols/presentation/screens/active_recovery_screen.dart';
 import '../features/recovery_protocols/presentation/screens/recovery_details_screen.dart';
@@ -33,6 +35,7 @@ GoRouter createAppRouter(
   RecoveryController recoveryController,
 ) {
   return GoRouter(
+    navigatorKey: NavigationService.navigatorKey,
     initialLocation: AppRoutes.splash,
     refreshListenable: authController,
     redirect: (context, state) {
@@ -46,6 +49,7 @@ GoRouter createAppRouter(
 
       final protectedLocations = {
         AppRoutes.dashboard,
+        AppRoutes.notifications,
         AppRoutes.challenges,
         AppRoutes.activeChallenge,
         AppRoutes.challengeDetails,
@@ -123,6 +127,10 @@ GoRouter createAppRouter(
                     path: 'challenge',
                     builder: (context, state) => const ChallengeScreen(),
                   ),
+                  GoRoute(
+                    path: 'notifications',
+                    builder: (context, state) => const NotificationsScreen(),
+                  ),
                 ],
               ),
             ],
@@ -131,7 +139,8 @@ GoRouter createAppRouter(
             routes: [
               GoRoute(
                 path: '/biometrics',
-                builder: (context, state) => BiometricsScreen(authController: authController),
+                builder: (context, state) =>
+                    BiometricsScreen(authController: authController),
               ),
             ],
           ),
@@ -139,7 +148,8 @@ GoRouter createAppRouter(
             routes: [
               GoRoute(
                 path: '/recovery',
-                builder: (context, state) => RecoveryScreen(authController: authController),
+                builder: (context, state) =>
+                    RecoveryScreen(authController: authController),
               ),
             ],
           ),
@@ -147,7 +157,8 @@ GoRouter createAppRouter(
             routes: [
               GoRoute(
                 path: '/reports',
-                builder: (context, state) => ReportsScreen(authController: authController),
+                builder: (context, state) =>
+                    ReportsScreen(authController: authController),
               ),
             ],
           ),
@@ -206,7 +217,8 @@ GoRouter createAppRouter(
             recoveryController: recoveryController,
           );
         },
-      ), GoRoute(
+      ),
+      GoRoute(
         path: AppRoutes.aboutUs,
         builder: (context, state) {
           return const AboutUsScreen();
@@ -218,4 +230,3 @@ GoRouter createAppRouter(
     ),
   );
 }
-

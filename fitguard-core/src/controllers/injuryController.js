@@ -1,5 +1,5 @@
 const InjuryLog = require('../models/InjuryLog');
-const Notification = require('../models/Notification');
+const { createNotification } = require('../services/notificationService');
 const APIFeatures = require('../utils/apiFeatures');
 
 exports.createInjury = async (req, res, next) => {
@@ -18,12 +18,11 @@ exports.createInjury = async (req, res, next) => {
 
     await injury.save();
 
-    const notification = new Notification({
+    await createNotification({
       userId: req.user._id,
       type: 'injury_reminder',
       message: `Injury logged: ${injury.severity} ${injury.injuryType} on ${injury.muscleGroup}. Take care and consider generating a recovery protocol.`
     });
-    await notification.save();
 
     res.status(201).json({
       success: true,
@@ -102,12 +101,11 @@ exports.updateInjury = async (req, res, next) => {
     await injury.save();
 
     if (previousStatus === 'active' && injury.recoveryStatus === 'recovered') {
-      const notification = new Notification({
+      await createNotification({
         userId: req.user._id,
         type: 'recovery_reminder',
         message: `Great news! You have recovered from your ${injury.muscleGroup} injury.`
       });
-      await notification.save();
     }
 
     res.status(200).json({

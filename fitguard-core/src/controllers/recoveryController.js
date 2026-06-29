@@ -1,6 +1,6 @@
 const RecoveryProtocol = require('../models/RecoveryProtocol');
 const InjuryLog = require('../models/InjuryLog');
-const Notification = require('../models/Notification');
+const { createNotification } = require('../services/notificationService');
 const aiService = require('../services/aiService');
 const { getInjuryAIContext } = require('../utils/injuryPatterns');
 const APIFeatures = require('../utils/apiFeatures');
@@ -71,12 +71,11 @@ exports.generateProtocol = async (req, res, next) => {
 
     await protocol.save();
 
-    const notification = new Notification({
+    await createNotification({
       userId: user._id,
       type: 'recovery_reminder',
       message: `Recovery protocol generated for your ${injuryLog.muscleGroup} ${injuryLog.injuryType}. Let's start Phase 1: ${phases[0].name}.`
     });
-    await notification.save();
 
     res.status(201).json({
       success: true,
@@ -217,12 +216,11 @@ exports.completePhase = async (req, res, next) => {
       msg = `Excellent work! You completed all recovery phases for your ${muscle}. Injury marked as recovered.`;
     }
 
-    const notification = new Notification({
+    await createNotification({
       userId: req.user._id,
       type: 'recovery_reminder',
       message: msg
     });
-    await notification.save();
 
     res.status(200).json({
       success: true,

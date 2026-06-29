@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:fitguard/core/services/notifications_service.dart';
+
 import '../models/challenge_model.dart';
 
 class ChallengeRepository {
@@ -27,7 +29,14 @@ class ChallengeRepository {
         '/api/challenges/generate',
         data: {'difficulty': difficulty},
       );
-      return ChallengeModel.fromJson(response.data['data']);
+      final challenge = ChallengeModel.fromJson(response.data['data']);
+      final sport = challenge.sport.isEmpty ? 'fitness' : challenge.sport;
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'challenge_nudge',
+        message:
+            'Your personalized 30-day $sport challenge (${challenge.difficulty}) has been generated! Complete Day 1 to start your streak.',
+      );
+      return challenge;
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? 'Failed to generate challenge');
     }
@@ -36,7 +45,16 @@ class ChallengeRepository {
   Future<ChallengeModel> completeDay(String challengeId, int dayNumber) async {
     try {
       final response = await dio.put('/api/challenges/$challengeId/day/$dayNumber/complete');
-      return ChallengeModel.fromJson(response.data['data']);
+      final challenge = ChallengeModel.fromJson(response.data['data']);
+      final sport = challenge.sport.isEmpty ? 'fitness' : challenge.sport;
+      final message = challenge.status == 'completed'
+          ? 'Incredible job! You have fully completed your 30-day $sport challenge!'
+          : 'Day $dayNumber of your $sport challenge is complete! Keep up the good work.';
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'challenge_nudge',
+        message: message,
+      );
+      return challenge;
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? 'Failed to complete day');
     }
