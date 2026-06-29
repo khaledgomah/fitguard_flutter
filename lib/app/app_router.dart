@@ -94,10 +94,69 @@ GoRouter createAppRouter(
         path: AppRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
+
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AuthenticatedProviders(
+            authController: authController,
+            child: MainScaffold(navigationShell: navigationShell),
+          );
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.dashboard,
+                builder: (context, state) =>
+                    DashboardScreen(authController: authController),
+                routes: [
+                  GoRoute(
+                    path: 'challenge',
+                    builder: (context, state) => const ChallengeScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/biometrics',
+                builder: (context, state) => BiometricsScreen(authController: authController),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/recovery',
+                builder: (context, state) => RecoveryScreen(authController: authController),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/reports',
+                builder: (context, state) => ReportsScreen(authController: authController),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.profile,
+                builder: (context, state) =>
+                    ProfileScreen(authController: authController),
+              ),
+            ],
+          ),
+        ],
+      ),
       GoRoute(
-        path: AppRoutes.dashboard,
+        path: AppRoutes.editProfile,
         builder: (context, state) =>
-            DashboardPlaceholderScreen(authController: authController),
+            EditProfileScreen(authController: authController),
       ),
       GoRoute(
         path: AppRoutes.challenges,
