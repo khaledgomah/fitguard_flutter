@@ -43,14 +43,12 @@ Future<void> main() async {
   final recoveryRepository = RecoveryRepositoryImpl(recoveryApi: recoveryApi);
   final recoveryController = RecoveryController(recoveryRepository: recoveryRepository);
 
-  // Update API authorization headers dynamically when session state updates
   authController.addListener(() {
     final token = authController.session?.accessToken;
     challengesApi.updateToken(token);
     recoveryApi.updateToken(token);
   });
 
-  // Call the listener immediately in case a session is already present
   final initialToken = authController.session?.accessToken;
   challengesApi.updateToken(initialToken);
   recoveryApi.updateToken(initialToken);

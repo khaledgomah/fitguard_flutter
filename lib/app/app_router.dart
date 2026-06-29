@@ -1,3 +1,4 @@
+import 'package:fitguard/features/about_us/presentation/screens/about_us_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -204,6 +205,11 @@ GoRouter createAppRouter(
             protocolId: id,
             recoveryController: recoveryController,
           );
+        },
+      ), GoRoute(
+        path: AppRoutes.aboutUs,
+        builder: (context, state) {
+          return const AboutUsScreen();
         },
       ),
     ],

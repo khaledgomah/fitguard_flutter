@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
-
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../injuries/presentation/widgets/log_injury_bottom_sheet.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -126,7 +123,7 @@ class _HeaderCard extends StatelessWidget {
                 child: Text(
                   'Goal: ${protocol['goal'] ?? 'Recovery'}',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
+                    color: theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -135,13 +132,13 @@ class _HeaderCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onPrimaryContainer.withOpacity(0.1),
+                  color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   protocol['status']?.toUpperCase() ?? 'ACTIVE',
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
+                    color: theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -152,7 +149,7 @@ class _HeaderCard extends StatelessWidget {
           Text(
             'Target: ${protocol['target'] ?? 'Full Mobility'}',
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onPrimaryContainer.withOpacity(0.8),
+              color: theme.colorScheme.onPrimary,
             ),
           ),
         ],

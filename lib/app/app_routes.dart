@@ -13,5 +13,6 @@ class AppRoutes {
   static const recoveryDetails = '/recovery/details/:id';
   static const profile = '/profile';
   static const editProfile = '/profile/edit';
+  static const aboutUs = '/about-us';
 }
 

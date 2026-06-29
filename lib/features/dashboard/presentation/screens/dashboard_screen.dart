@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
-
 import '../../../../app/app_routes.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../injuries/presentation/widgets/log_injury_bottom_sheet.dart';
-import '../../data/repositories/dashboard_repository.dart';
 import '../cubit/dashboard_cubit.dart';
 import '../cubit/dashboard_state.dart';
 
@@ -44,10 +41,10 @@ class _DashboardScreenView extends StatelessWidget {
               style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.notifications_outlined),
-                onPressed: () {},
-              ),
+              // IconButton(
+              //   icon: const Icon(Icons.notifications_outlined),
+              //   onPressed: () {},
+              // ),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 8.0),
                 child: GestureDetector(

@@ -13,6 +13,7 @@ class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("About us")),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: const SafeArea(
         child: SingleChildScrollView(

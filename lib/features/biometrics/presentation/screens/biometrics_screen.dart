@@ -24,10 +24,10 @@ class _BiometricsScreenView extends StatelessWidget {
 
     // Calculate BMI
     double bmi = 0;
-    if (user != null && user.weight != null && user.height != null) {
-      final heightInMeters = user.height! / 100;
+    if (user != null) {
+      final heightInMeters = user.height / 100;
       if (heightInMeters > 0) {
-        bmi = user.weight! / (heightInMeters * heightInMeters);
+        bmi = user.weight / (heightInMeters * heightInMeters);
       }
     }
 
@@ -131,7 +131,7 @@ class _HeartRateVariabilityCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Heart Rate Variability (HRV)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-              Icon(Icons.favorite, color: Colors.redAccent),
+              const Icon(Icons.favorite, color: Colors.redAccent),
             ],
           ),
           const SizedBox(height: 8),
