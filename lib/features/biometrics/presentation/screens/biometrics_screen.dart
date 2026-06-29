@@ -34,7 +34,12 @@ class _BiometricsScreenView extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        title: Text('Biometrics', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          'Biometrics',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -61,11 +66,27 @@ class _StatRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _StatCard(title: 'Weight', value: weight != null ? '${weight}kg' : '--')),
+        Expanded(
+          child: _StatCard(
+            title: 'Weight',
+            value: weight != null ? '${weight}kg' : '--',
+          ),
+        ),
         const SizedBox(width: 16),
-        Expanded(child: _StatCard(title: 'Height', value: height != null ? '${height}cm' : '--')),
+        Expanded(
+          child: _StatCard(
+            title: 'Height',
+            value: height != null ? '${height}cm' : '--',
+          ),
+        ),
         const SizedBox(width: 16),
-        Expanded(child: _StatCard(title: 'BMI', value: bmi > 0 ? bmi.toStringAsFixed(1) : '--', color: _getBmiColor(bmi))),
+        Expanded(
+          child: _StatCard(
+            title: 'BMI',
+            value: bmi > 0 ? bmi.toStringAsFixed(1) : '--',
+            color: _getBmiColor(bmi),
+          ),
+        ),
       ],
     );
   }
@@ -98,7 +119,12 @@ class _StatCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(title, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.outline)),
+          Text(
+            title,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
+          ),
           const SizedBox(height: 8),
           Text(
             value,
@@ -130,12 +156,22 @@ class _HeartRateVariabilityCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Heart Rate Variability (HRV)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-              Icon(Icons.favorite, color: Colors.redAccent),
+              Text(
+                'Heart Rate Variability (HRV)',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Icon(Icons.favorite, color: Colors.redAccent),
             ],
           ),
           const SizedBox(height: 8),
-          Text('Your HRV is trending 12% higher than last week. Excellent recovery.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline)),
+          Text(
+            'Your HRV is trending 12% higher than last week. Excellent recovery.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
+          ),
           const SizedBox(height: 24),
           SizedBox(
             height: 180,
@@ -165,7 +201,7 @@ class _HeartRateVariabilityCard extends StatelessWidget {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: Colors.redAccent.withOpacity(0.1),
+                      color: Colors.redAccent.withValues(alpha: 0.1),
                     ),
                   ),
                 ],
@@ -187,14 +223,14 @@ class _SleepQualityCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.deepPurpleAccent.withOpacity(0.05),
-            Colors.deepPurpleAccent.withOpacity(0.15),
+            Colors.deepPurpleAccent.withValues(alpha: 0.05),
+            Colors.deepPurpleAccent.withValues(alpha: 0.15),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.deepPurpleAccent.withOpacity(0.2)),
+        border: Border.all(color: Colors.deepPurpleAccent.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,19 +238,33 @@ class _SleepQualityCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Sleep Quality', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                'Sleep Quality',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.deepPurpleAccent.withOpacity(0.1),
+                  color: Colors.deepPurpleAccent.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.nights_stay, color: Colors.deepPurpleAccent, size: 20),
+                child: const Icon(
+                  Icons.nights_stay,
+                  color: Colors.deepPurpleAccent,
+                  size: 20,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          Text('Avg. 7h 15m this week.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          Text(
+            'Avg. 7h 15m this week.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
           const SizedBox(height: 24),
           SizedBox(
             height: 180,
@@ -223,16 +273,27 @@ class _SleepQualityCard extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 titlesData: FlTitlesData(
                   show: true,
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  leftTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
                         const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
                         if (value.toInt() >= 0 && value.toInt() < days.length) {
-                          return Text(days[value.toInt()], style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant));
+                          return Text(
+                            days[value.toInt()],
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          );
                         }
                         return const SizedBox.shrink();
                       },
@@ -275,9 +336,9 @@ class _SleepQualityCard extends StatelessWidget {
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
             toY: 10,
-            color: Colors.deepPurpleAccent.withOpacity(0.1),
+            color: Colors.deepPurpleAccent.withValues(alpha: 0.1),
           ),
-        )
+        ),
       ],
     );
   }
