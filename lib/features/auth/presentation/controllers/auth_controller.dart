@@ -91,4 +91,11 @@ class AuthController extends ChangeNotifier {
     _status = AuthStatus.unauthenticated;
     notifyListeners();
   }
+
+  void updateUser(AuthUser updatedUser) {
+    if (_session != null) {
+      _session = _session!.copyWith(user: updatedUser);
+      notifyListeners();
+    }
+  }
 }

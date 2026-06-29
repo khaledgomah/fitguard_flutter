@@ -28,9 +28,10 @@ exports.getProfile = async (req, res, next) => {
 exports.updateProfile = async (req, res, next) => {
   try {
     const user = req.user;
-    const { name, sport, age, weight, height } = req.body;
+    const { name, email, sport, age, weight, height } = req.body;
 
     if (name !== undefined) user.name = name;
+    if (email !== undefined) user.email = email;
     if (sport !== undefined) user.sport = sport;
     if (age !== undefined) user.age = age;
     if (weight !== undefined) user.weight = weight;

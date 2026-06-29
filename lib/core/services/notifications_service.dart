@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitguard/app/app_routes.dart';
 import 'package:fitguard/core/services/navigation_service.dart';
+import 'package:fitguard/core/theme/app_theme.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
