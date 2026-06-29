@@ -38,7 +38,9 @@ class _DashboardScreenView extends StatelessWidget {
           appBar: AppBar(
             title: Text(
               'Welcome back, $firstName',
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             actions: [
               // IconButton(
@@ -61,7 +63,7 @@ class _DashboardScreenView extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
           body: BlocBuilder<DashboardCubit, DashboardState>(
@@ -69,7 +71,7 @@ class _DashboardScreenView extends StatelessWidget {
               if (state is DashboardLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
-              
+
               if (state is DashboardError) {
                 return Center(
                   child: Column(
@@ -78,7 +80,9 @@ class _DashboardScreenView extends StatelessWidget {
                       Text('Error: ${state.message}'),
                       const SizedBox(height: 16),
                       ElevatedButton(
-                        onPressed: () => context.read<DashboardCubit>().fetchDashboardStats(),
+                        onPressed: () => context
+                            .read<DashboardCubit>()
+                            .fetchDashboardStats(),
                         child: const Text('Retry'),
                       ),
                     ],
@@ -88,9 +92,13 @@ class _DashboardScreenView extends StatelessWidget {
 
               if (state is DashboardLoaded) {
                 return RefreshIndicator(
-                  onRefresh: () => context.read<DashboardCubit>().fetchDashboardStats(),
+                  onRefresh: () =>
+                      context.read<DashboardCubit>().fetchDashboardStats(),
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
                     children: [
                       _HeroRecoveryCard(score: state.stats.activityScore),
                       const SizedBox(height: 24),
@@ -102,7 +110,9 @@ class _DashboardScreenView extends StatelessWidget {
                       const SizedBox(height: 24),
                       const _RecoveryPlanCard(),
                       const SizedBox(height: 24),
-                      _ClinicalAlertsSection(injuries: state.stats.totalInjuries),
+                      _ClinicalAlertsSection(
+                        injuries: state.stats.totalInjuries,
+                      ),
                       const SizedBox(height: 32),
                     ],
                   ),
@@ -125,17 +135,21 @@ class _HeroRecoveryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     // Determine color based on score for a dynamic glowing effect
-    final Color scoreColor = score > 80 ? Colors.greenAccent : score > 50 ? Colors.orangeAccent : Colors.redAccent;
-    
+    final Color scoreColor = score > 80
+        ? Colors.greenAccent
+        : score > 50
+        ? Colors.orangeAccent
+        : Colors.redAccent;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            theme.colorScheme.primary.withOpacity(0.9),
-            theme.colorScheme.primary.withOpacity(0.6),
+            theme.colorScheme.primary.withValues(alpha: 0.9),
+            theme.colorScheme.primary.withValues(alpha: 0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -143,7 +157,7 @@ class _HeroRecoveryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.primary.withOpacity(0.4),
+            color: theme.colorScheme.primary.withValues(alpha: 0.4),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -158,17 +172,20 @@ class _HeroRecoveryCard extends StatelessWidget {
               Text(
                 'Recovery Score',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                 ),
                 child: Text(
                   'Active Recovery',
@@ -192,7 +209,7 @@ class _HeroRecoveryCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: scoreColor.withOpacity(0.4),
+                      color: scoreColor.withValues(alpha: 0.4),
                       blurRadius: 16,
                       spreadRadius: 2,
                     ),
@@ -204,13 +221,17 @@ class _HeroRecoveryCard extends StatelessWidget {
                     CircularProgressIndicator(
                       value: score / 100,
                       strokeWidth: 10,
-                      backgroundColor: Colors.white.withOpacity(0.1),
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
                       color: scoreColor,
                       strokeCap: StrokeCap.round,
                     ),
                     Center(
                       child: Icon(
-                        score > 80 ? Icons.bolt : score > 50 ? Icons.battery_charging_full : Icons.battery_alert,
+                        score > 80
+                            ? Icons.bolt
+                            : score > 50
+                            ? Icons.battery_charging_full
+                            : Icons.battery_alert,
                         color: Colors.white,
                         size: 36,
                       ),
@@ -237,7 +258,7 @@ class _HeroRecoveryCard extends StatelessWidget {
                     child: Text(
                       '/ 100',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -250,15 +271,19 @@ class _HeroRecoveryCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.15),
+              color: Colors.black.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _HeroStat(label: 'Fatigue Index', value: 'Low (12%)'),
-                Container(width: 1, height: 40, color: Colors.white.withOpacity(0.2)),
-                _HeroStat(label: 'Status', value: 'Ready to Train'),
+                const _HeroStat(label: 'Fatigue Index', value: 'Low (12%)'),
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: Colors.white.withValues(alpha: 0.2),
+                ),
+                const _HeroStat(label: 'Status', value: 'Ready to Train'),
               ],
             ),
           ),
@@ -282,7 +307,7 @@ class _HeroStat extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.labelMedium?.copyWith(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             letterSpacing: 0.5,
           ),
         ),
@@ -367,10 +392,12 @@ class _QuickActionItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: theme.colorScheme.outlineVariant.withOpacity(0.5)),
+                border: Border.all(
+                  color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withValues(alpha: 0.03),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -381,7 +408,9 @@ class _QuickActionItem extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
-              style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -410,7 +439,12 @@ class _BiometricTrendsCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Biometric Trends', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                'Biometric Trends',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Icon(Icons.bar_chart, color: theme.colorScheme.primary),
             ],
           ),
@@ -424,13 +458,17 @@ class _BiometricTrendsCard extends StatelessWidget {
                   show: true,
                   drawVerticalLine: false,
                   getDrawingHorizontalLine: (value) => FlLine(
-                    color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+                    color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
                     strokeWidth: 1,
                   ),
                 ),
                 titlesData: FlTitlesData(
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -440,7 +478,9 @@ class _BiometricTrendsCard extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 12.0),
                           child: Text(
                             value.toInt().toString(),
-                            style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.outline,
+                            ),
                             textAlign: TextAlign.right,
                           ),
                         );
@@ -453,13 +493,23 @@ class _BiometricTrendsCard extends StatelessWidget {
                       reservedSize: 32,
                       interval: 1,
                       getTitlesWidget: (value, meta) {
-                        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                        const days = [
+                          'Mon',
+                          'Tue',
+                          'Wed',
+                          'Thu',
+                          'Fri',
+                          'Sat',
+                          'Sun',
+                        ];
                         if (value.toInt() >= 0 && value.toInt() < days.length) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Text(
                               days[value.toInt()],
-                              style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: theme.colorScheme.outline,
+                              ),
                             ),
                           );
                         }
@@ -493,8 +543,8 @@ class _BiometricTrendsCard extends StatelessWidget {
                       show: true,
                       gradient: LinearGradient(
                         colors: [
-                          theme.colorScheme.primary.withOpacity(0.3),
-                          theme.colorScheme.primary.withOpacity(0.0),
+                          theme.colorScheme.primary.withValues(alpha: 0.3),
+                          theme.colorScheme.primary.withValues(alpha: 0.0),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -531,7 +581,7 @@ class _AIRecommendationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1BFFFF).withOpacity(0.3),
+            color: const Color(0xFF1BFFFF).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -545,10 +595,14 @@ class _AIRecommendationCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.auto_awesome, color: Colors.white, size: 20),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
@@ -565,7 +619,7 @@ class _AIRecommendationCard extends StatelessWidget {
           Text(
             'Reduce sprint intensity today. Your HRV indicates central nervous system fatigue.',
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.white.withOpacity(0.95),
+              color: Colors.white.withValues(alpha: 0.95),
               height: 1.4,
             ),
           ),
@@ -573,18 +627,22 @@ class _AIRecommendationCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.1)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
             ),
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: _AIStat(label: 'Target Velocity', value: '< 80% Max'),
                 ),
-                Container(width: 1, height: 40, color: Colors.white.withOpacity(0.2)),
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: Colors.white.withValues(alpha: 0.2),
+                ),
                 const SizedBox(width: 16),
-                Expanded(
+                const Expanded(
                   child: _AIStat(label: 'Volume Limit', value: '45 mins'),
                 ),
               ],
@@ -610,7 +668,7 @@ class _AIStat extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.labelMedium?.copyWith(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             letterSpacing: 0.5,
           ),
         ),
@@ -646,8 +704,19 @@ class _RecoveryPlanCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Recovery Plan', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-              Text('60%', style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
+              Text(
+                'Recovery Plan',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '60%',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -659,10 +728,16 @@ class _RecoveryPlanCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
           const SizedBox(height: 20),
-          _ChecklistItem(title: 'Ice Bath (10 mins)', isCompleted: true),
-          _ChecklistItem(title: 'Foam Rolling (Lower body)', isCompleted: true),
-          _ChecklistItem(title: 'Hydration (1.5L)', isCompleted: false),
-          _ChecklistItem(title: 'Sleep Optimization (8h)', isCompleted: false),
+          const _ChecklistItem(title: 'Ice Bath (10 mins)', isCompleted: true),
+          const _ChecklistItem(
+            title: 'Foam Rolling (Lower body)',
+            isCompleted: true,
+          ),
+          const _ChecklistItem(title: 'Hydration (1.5L)', isCompleted: false),
+          const _ChecklistItem(
+            title: 'Sleep Optimization (8h)',
+            isCompleted: false,
+          ),
         ],
       ),
     );
@@ -683,13 +758,17 @@ class _ChecklistItem extends StatelessWidget {
         children: [
           Icon(
             isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: isCompleted ? theme.colorScheme.primary : theme.colorScheme.outline,
+            color: isCompleted
+                ? theme.colorScheme.primary
+                : theme.colorScheme.outline,
           ),
           const SizedBox(width: 12),
           Text(
             title,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: isCompleted ? theme.colorScheme.outline : theme.colorScheme.onSurface,
+              color: isCompleted
+                  ? theme.colorScheme.outline
+                  : theme.colorScheme.onSurface,
               decoration: isCompleted ? TextDecoration.lineThrough : null,
             ),
           ),
@@ -711,14 +790,17 @@ class _ClinicalAlertsSection extends StatelessWidget {
       children: [
         Text(
           'Clinical Alerts',
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 16),
         if (injuries > 0)
           _AlertCard(
             title: 'Hamstring Strain Risk',
             status: 'High',
-            description: 'Asymmetry detected in recent sprints. Recommended ultrasound scan.',
+            description:
+                'Asymmetry detected in recent sprints. Recommended ultrasound scan.',
             color: theme.colorScheme.error,
             backgroundColor: theme.colorScheme.errorContainer,
             iconColor: theme.colorScheme.onErrorContainer,
@@ -729,7 +811,9 @@ class _ClinicalAlertsSection extends StatelessWidget {
             status: 'Optimal',
             description: 'No injury risks detected in recent data.',
             color: theme.colorScheme.primary,
-            backgroundColor: theme.colorScheme.primaryContainer.withOpacity(0.2),
+            backgroundColor: theme.colorScheme.primaryContainer.withValues(
+              alpha: 0.2,
+            ),
             iconColor: theme.colorScheme.primary,
           ),
       ],
@@ -762,7 +846,7 @@ class _AlertCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -776,16 +860,28 @@ class _AlertCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: iconColor)),
+                    Text(
+                      title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: iconColor,
+                      ),
+                    ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: color,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         status,
-                        style: theme.textTheme.labelSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -793,7 +889,9 @@ class _AlertCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   description,
-                  style: theme.textTheme.bodyMedium?.copyWith(color: iconColor.withOpacity(0.8)),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: iconColor.withValues(alpha: 0.8),
+                  ),
                 ),
               ],
             ),

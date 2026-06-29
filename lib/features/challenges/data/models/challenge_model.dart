@@ -32,7 +32,8 @@ class ChallengeModel extends Challenge {
         ? DateTime.tryParse(json['startDate'].toString()) ?? DateTime.now()
         : DateTime.now();
 
-    final generatedPlan = (json['generatedPlan'] as List<dynamic>?)
+    final generatedPlan =
+        (json['generatedPlan'] as List<dynamic>?)
             ?.map((e) => ChallengeDay.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
@@ -65,7 +66,7 @@ class ChallengeModel extends Challenge {
     return ChallengeModel(
       id: id,
       title: '${sport.toUpperCase()} Challenge',
-      description: 'A 30-day ${difficulty} challenge for ${sport}.',
+      description: 'A 30-day $difficulty challenge for $sport.',
       type: sport,
       difficulty: difficulty,
       durationDays: generatedPlan.isNotEmpty ? generatedPlan.length : 30,
@@ -145,11 +146,13 @@ class ChallengeDay {
     return ChallengeDay(
       day: _toInt(json['day'] ?? 1),
       task: json['task']?.toString(),
-      exercises: (json['exercises'] as List<dynamic>?)
+      exercises:
+          (json['exercises'] as List<dynamic>?)
               ?.map((e) => Exercise.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      muscleGroups: (json['muscleGroups'] as List<dynamic>?)
+      muscleGroups:
+          (json['muscleGroups'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],

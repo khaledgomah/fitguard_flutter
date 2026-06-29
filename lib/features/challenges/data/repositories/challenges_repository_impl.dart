@@ -188,7 +188,7 @@ class ChallengesRepositoryImpl implements ChallengesRepository {
           dailyTasks: updatedTasks,
           isCompleted: isCompleted,
           currentDay: currentDay,
-        ) as ChallengeModel;
+        );
 
         _mockChallenges[index] = updatedChallenge;
         if (_mockActiveChallenge?.id == challengeId) {
@@ -215,7 +215,7 @@ class ChallengesRepositoryImpl implements ChallengesRepository {
         final updatedChallenge = challenge.copyWith(
           dailyTasks: updatedTasks,
           isCompleted: true,
-        ) as ChallengeModel;
+        );
 
         _mockChallenges[index] = updatedChallenge;
         if (_mockActiveChallenge?.id == challengeId) {

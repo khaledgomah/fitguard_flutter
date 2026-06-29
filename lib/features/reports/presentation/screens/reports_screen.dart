@@ -26,19 +26,25 @@ class _ReportsScreenView extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        title: Text('Analytics & Reports', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          'Analytics & Reports',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: BlocBuilder<ReportsCubit, ReportsState>(
         builder: (context, state) {
-          if (state is ReportsLoading) return const Center(child: CircularProgressIndicator());
-          
+          if (state is ReportsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
           if (state is ReportsError) {
             return Center(child: Text('Error: ${state.message}'));
           }
 
           if (state is ReportsLoaded) {
             final stats = state.stats;
-            
+
             return ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
@@ -49,7 +55,9 @@ class _ReportsScreenView extends StatelessWidget {
                 _MuscleGroupsBarChart(topMuscleGroups: stats.topMuscleGroups),
                 const SizedBox(height: 32),
                 _buildSectionTitle(context, 'Weekly Activity History'),
-                _ActivityHistoryLineChart(activityHistory: stats.activityHistory),
+                _ActivityHistoryLineChart(
+                  activityHistory: stats.activityHistory,
+                ),
                 const SizedBox(height: 32),
               ],
             );
@@ -66,7 +74,9 @@ class _ReportsScreenView extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -80,7 +90,7 @@ class _SeverityPieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     final mild = severityBreakdown.mild.toDouble();
     final moderate = severityBreakdown.moderate.toDouble();
     final severe = severityBreakdown.severe.toDouble();
@@ -90,7 +100,10 @@ class _SeverityPieChart extends StatelessWidget {
       return Container(
         height: 200,
         alignment: Alignment.center,
-        child: Text('No injury data available', style: theme.textTheme.bodyMedium),
+        child: Text(
+          'No injury data available',
+          style: theme.textTheme.bodyMedium,
+        ),
       );
     }
 
@@ -104,23 +117,35 @@ class _SeverityPieChart extends StatelessWidget {
             PieChartSectionData(
               color: Colors.green,
               value: mild,
-              title: '${((mild/total)*100).toInt()}%',
+              title: '${((mild / total) * 100).toInt()}%',
               radius: 50,
-              titleStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+              titleStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             PieChartSectionData(
               color: Colors.orange,
               value: moderate,
-              title: '${((moderate/total)*100).toInt()}%',
+              title: '${((moderate / total) * 100).toInt()}%',
               radius: 50,
-              titleStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+              titleStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             PieChartSectionData(
               color: Colors.red,
               value: severe,
-              title: '${((severe/total)*100).toInt()}%',
+              title: '${((severe / total) * 100).toInt()}%',
               radius: 50,
-              titleStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+              titleStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -142,11 +167,17 @@ class _MuscleGroupsBarChart extends StatelessWidget {
       return Container(
         height: 200,
         alignment: Alignment.center,
-        child: Text('No muscle group data available', style: theme.textTheme.bodyMedium),
+        child: Text(
+          'No muscle group data available',
+          style: theme.textTheme.bodyMedium,
+        ),
       );
     }
 
-    final double maxVal = topMuscleGroups.fold(0, (max, e) => e.count > max ? e.count.toDouble() : max);
+    final double maxVal = topMuscleGroups.fold(
+      0,
+      (max, e) => e.count > max ? e.count.toDouble() : max,
+    );
 
     return SizedBox(
       height: 200,
@@ -154,7 +185,7 @@ class _MuscleGroupsBarChart extends StatelessWidget {
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
           maxY: maxVal + 1,
-          barTouchData: BarTouchData(enabled: false),
+          barTouchData: const BarTouchData(enabled: false),
           titlesData: FlTitlesData(
             show: true,
             bottomTitles: AxisTitles(
@@ -166,7 +197,9 @@ class _MuscleGroupsBarChart extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         topMuscleGroups[value.toInt()].name.toUpperCase(),
-                        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurface),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
                     );
                   }
@@ -174,9 +207,15 @@ class _MuscleGroupsBarChart extends StatelessWidget {
                 },
               ),
             ),
-            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            leftTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
           ),
           gridData: const FlGridData(show: false),
           borderData: FlBorderData(show: false),
@@ -228,13 +267,17 @@ class _ActivityHistoryLineChart extends StatelessWidget {
             show: true,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
               strokeWidth: 1,
             ),
           ),
           titlesData: FlTitlesData(
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
@@ -244,7 +287,9 @@ class _ActivityHistoryLineChart extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 12.0),
                     child: Text(
                       '${value.toInt()}%',
-                      style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
                       textAlign: TextAlign.right,
                     ),
                   );
@@ -257,12 +302,15 @@ class _ActivityHistoryLineChart extends StatelessWidget {
                 reservedSize: 32,
                 interval: 1,
                 getTitlesWidget: (value, meta) {
-                  if (value.toInt() >= 0 && value.toInt() < activityHistory.length) {
+                  if (value.toInt() >= 0 &&
+                      value.toInt() < activityHistory.length) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
                         activityHistory[value.toInt()].day,
-                        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.outline,
+                        ),
                       ),
                     );
                   }
@@ -273,7 +321,9 @@ class _ActivityHistoryLineChart extends StatelessWidget {
           ),
           borderData: FlBorderData(show: false),
           minX: 0,
-          maxX: activityHistory.length > 1 ? (activityHistory.length - 1).toDouble() : 1.0,
+          maxX: activityHistory.length > 1
+              ? (activityHistory.length - 1).toDouble()
+              : 1.0,
           minY: 0,
           maxY: 100,
           lineBarsData: [
@@ -288,8 +338,8 @@ class _ActivityHistoryLineChart extends StatelessWidget {
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    theme.colorScheme.secondary.withOpacity(0.3),
-                    theme.colorScheme.secondary.withOpacity(0.0),
+                    theme.colorScheme.secondary.withValues(alpha: 0.3),
+                    theme.colorScheme.secondary.withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
