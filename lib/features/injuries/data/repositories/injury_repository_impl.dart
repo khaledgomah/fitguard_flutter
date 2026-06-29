@@ -1,3 +1,4 @@
+import '../../../../core/services/notifications_service.dart';
 import '../../domain/entities/create_injury_dto.dart';
 import '../../domain/entities/injury_log.dart';
 import '../../domain/entities/injury_pattern.dart';
@@ -47,13 +48,35 @@ class InjuryRepositoryImpl implements InjuryRepository {
   @override
   Future<InjuryLog> createInjury(CreateInjuryDto dto) async {
     final model = await _dataSource.createInjury(dto.toJson());
-    return model.toEntity();
+    final injury = model.toEntity();
+
+    await NotificationService.showBackendNotificationIfNeeded(
+      type: 'injury_reminder',
+      message:
+          'Injury logged: ${injury.severity} ${injury.injuryType} on ${injury.muscleGroup}. Take care and consider generating a recovery protocol.',
+    );
+
+    return injury;
   }
 
   @override
   Future<InjuryLog> updateInjury(String id, UpdateInjuryDto dto) async {
+    final previous = dto.recoveryStatus == 'recovered'
+        ? await _dataSource.getInjuryById(id)
+        : null;
     final model = await _dataSource.updateInjury(id, dto.toJson());
-    return model.toEntity();
+    final injury = model.toEntity();
+
+    if (previous?.recoveryStatus == 'active' &&
+        injury.recoveryStatus == 'recovered') {
+      await NotificationService.showBackendNotificationIfNeeded(
+        type: 'recovery_reminder',
+        message:
+            'Great news! You have recovered from your ${injury.muscleGroup} injury.',
+      );
+    }
+
+    return injury;
   }
 
   @override

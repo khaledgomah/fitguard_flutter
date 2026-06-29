@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fitguard/core/services/notifications_service.dart';
 
 class RecoveryRepository {
   final Dio _dio;
@@ -25,7 +26,15 @@ class RecoveryRepository {
     try {
       final response = await _dio.put('/api/recovery/$id/phase/$phaseNumber/complete');
       if (response.data['success'] == true) {
-        return response.data['data'];
+        final data = Map<String, dynamic>.from(response.data['data'] as Map);
+        final message = data['status'] == 'completed'
+            ? 'Excellent work! You completed all recovery phases. Injury marked as recovered.'
+            : 'Phase $phaseNumber of your recovery protocol completed.';
+        await NotificationService.showBackendNotificationIfNeeded(
+          type: 'recovery_reminder',
+          message: message,
+        );
+        return data;
       } else {
         throw Exception(response.data['message'] ?? 'Failed to complete phase');
       }

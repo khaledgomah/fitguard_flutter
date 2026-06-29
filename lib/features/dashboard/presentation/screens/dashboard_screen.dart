@@ -43,10 +43,49 @@ class _DashboardScreenView extends StatelessWidget {
               ),
             ),
             actions: [
-              // IconButton(
-              //   icon: const Icon(Icons.notifications_outlined),
-              //   onPressed: () {},
-              // ),
+              BlocBuilder<DashboardCubit, DashboardState>(
+                builder: (context, state) {
+                  final unreadCount = state is DashboardLoaded
+                      ? state.stats.unreadNotifications
+                      : 0;
+
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      IconButton(
+                        tooltip: 'Notifications',
+                        icon: const Icon(Icons.notifications_outlined),
+                        onPressed: () => context.go(AppRoutes.notifications),
+                      ),
+                      if (unreadCount > 0)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.error,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              unreadCount > 9 ? '9+' : '$unreadCount',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: theme.colorScheme.onError,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 8.0),
                 child: GestureDetector(
@@ -185,7 +224,9 @@ class _HeroRecoveryCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.1),
+                  ),
                 ),
                 child: Text(
                   'Active Recovery',
@@ -392,7 +433,9 @@ class _QuickActionItem extends StatelessWidget {
                 color: theme.colorScheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                  color: theme.colorScheme.outlineVariant.withValues(
+                    alpha: 0.5,
+                  ),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -457,7 +500,9 @@ class _BiometricTrendsCard extends StatelessWidget {
                   show: true,
                   drawVerticalLine: false,
                   getDrawingHorizontalLine: (value) => FlLine(
-                    color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    color: theme.colorScheme.outlineVariant.withValues(
+                      alpha: 0.5,
+                    ),
                     strokeWidth: 1,
                   ),
                 ),

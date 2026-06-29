@@ -1,21 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitguard/app/app_routes.dart';
 import 'package:fitguard/core/services/navigation_service.dart';
 import 'package:fitguard/core/theme/app_theme.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-@pragma('vm:entry-point')
-Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
-  final notification = message.notification;
-  if (notification != null && notification.android != null) {
-    await NotificationService.showNotification(
-      title: message.notification?.title ?? '',
-      body: message.notification?.body ?? '',
-      payload: message.data.toString(),
-    );
-  }
-}
+import 'package:go_router/go_router.dart';
 
 const AndroidNotificationChannel _kChannel = AndroidNotificationChannel(
   'FitGuardAppChannelId',
@@ -29,24 +17,10 @@ const AndroidNotificationChannel _kChannel = AndroidNotificationChannel(
 
 class NotificationService {
   NotificationService._();
-  static final FirebaseMessaging _firebaseMessaging =
-      FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   static Future<void> initialize() async {
-    await _firebaseMessaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
     const AndroidInitializationSettings androidInitSettings =
         AndroidInitializationSettings('@drawable/ic_notification');
 
@@ -79,57 +53,13 @@ class NotificationService {
           IOSFlutterLocalNotificationsPlugin
         >()
         ?.requestPermissions(alert: true, badge: true, sound: true);
-
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      onNotificationTap(
-        NotificationResponse(
-          id: message.hashCode,
-          payload: _extractNotificationPayload(message.data),
-          notificationResponseType:
-              NotificationResponseType.selectedNotification,
-        ),
-      );
-    });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      final RemoteNotification? notification = message.notification;
-
-      final String title =
-          notification?.title ?? message.data['title']?.toString() ?? '';
-      final String body =
-          notification?.body ?? message.data['body']?.toString() ?? '';
-
-      if (title.isEmpty && body.isEmpty) return;
-
-      await showNotification(
-        title: title,
-        body: body,
-        payload: _extractNotificationPayload(message.data),
-      );
-    });
-
-    final RemoteMessage? message = await FirebaseMessaging.instance
-        .getInitialMessage();
-
-    if (message != null) {
-      Future.delayed(const Duration(seconds: 1), () {
-        onNotificationTap(
-          NotificationResponse(
-            id: message.hashCode,
-            payload: message.data.toString(),
-            notificationResponseType:
-                NotificationResponseType.selectedNotification,
-          ),
-        );
-      });
-    }
   }
 
   @pragma('vm:entry-point')
   static void onNotificationTap(
     NotificationResponse notificationResponse,
   ) async {
-   // final payload = notificationResponse.payload ?? '';
+    // final payload = notificationResponse.payload ?? '';
 
     final navigatorState = NavigationService.navigatorKey.currentState;
     if (navigatorState == null) return;
@@ -138,27 +68,9 @@ class NotificationService {
     if (overlayContext == null) return;
 
     final currentRoute = ModalRoute.of(overlayContext);
-    if (currentRoute?.settings.name != AppRoutes.dashboard) {
-      navigatorState.pushNamedAndRemoveUntil(
-        AppRoutes.dashboard,
-        (route) => false,
-      );
+    if (currentRoute?.settings.name != AppRoutes.notifications) {
+      overlayContext.go(AppRoutes.notifications);
     }
-  }
-
-  static String _extractNotificationPayload(Map<String, dynamic> data) {
-    final candidates = <String?>[
-      data['filePath']?.toString(),
-      data['pdfPath']?.toString(),
-      data['pdfUrl']?.toString(),
-      data['path']?.toString(),
-      data['payload']?.toString(),
-    ];
-
-    for (final v in candidates) {
-      if (v != null && v.isNotEmpty) return v;
-    }
-    return data.toString();
   }
 
   static Future<void> showNotification({
@@ -192,13 +104,29 @@ class NotificationService {
     );
   }
 
-  static Future getDeviceToken() async {
-    try {
-      String? token;
-      token = await _firebaseMessaging.getToken();
-      return token;
-    } catch (e) {
-      return null;
+  static Future<void> showBackendNotificationIfNeeded({
+    required String type,
+    required String message,
+  }) async {
+    if (message.isEmpty) return;
+
+    await showNotification(
+      title: _titleForType(type),
+      body: message,
+      payload: type,
+    );
+  }
+
+  static String _titleForType(String type) {
+    switch (type) {
+      case 'injury_reminder':
+        return 'Injury reminder';
+      case 'challenge_nudge':
+        return 'Challenge update';
+      case 'recovery_reminder':
+        return 'Recovery reminder';
+      default:
+        return 'FitGuard notification';
     }
   }
 }
