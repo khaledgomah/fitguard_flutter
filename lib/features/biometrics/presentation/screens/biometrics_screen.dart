@@ -24,10 +24,10 @@ class _BiometricsScreenView extends StatelessWidget {
 
     // Calculate BMI
     double bmi = 0;
-    if (user != null && user.weight != null && user.height != null) {
-      final heightInMeters = user.height! / 100;
+    if (user != null) {
+      final heightInMeters = user.height / 100;
       if (heightInMeters > 0) {
-        bmi = user.weight! / (heightInMeters * heightInMeters);
+        bmi = user.weight / (heightInMeters * heightInMeters);
       }
     }
 

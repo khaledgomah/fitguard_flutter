@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../injuries/presentation/widgets/log_injury_bottom_sheet.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:dio/dio.dart';
 
 import '../../../auth/presentation/controllers/auth_controller.dart';
@@ -89,8 +88,6 @@ class _EditProfileFormState extends State<_EditProfileForm> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final user = widget.authController.user;
-    final nameInitial = user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : 'A';
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
